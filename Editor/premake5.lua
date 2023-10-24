@@ -15,7 +15,9 @@ project "Editor"
 
     includedirs {
         "src",
-        "../vendor/raylib/include"
+        "../vendor/raylib/include",
+        "../vendor/imgui",
+        "../Core/src"
     }
 
     libdirs {
@@ -24,7 +26,8 @@ project "Editor"
 
     links {
         "Core",
-        "raylibdll"
+        "raylibdll",
+        "ImGui"
     }
 
     postbuildcommands { ("{COPY} ..\\vendor\\raylib\\lib\\raylib.dll ..\\bin\\" .. outputdir .. "\\Editor") }    

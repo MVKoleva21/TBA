@@ -1,25 +1,36 @@
 #include <iostream>
 #include <raylib.h>
+#include <imgui.h>
+#include <ImGui/rlImGui.h>
 
 int main()
 {
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
+    SetConfigFlags(FLAG_VSYNC_HINT);
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(1280, 720, "Raylib ImGui!");
+    rlImGuiSetup(true);
 
-    SetTargetFPS(60);
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
+        ClearBackground(BLACK);
 
-        ClearBackground(RAYWHITE);
+        rlImGuiBegin();
+        ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        ImGui::ShowDemoWindow();
+
+        rlImGuiEnd();
 
         EndDrawing();
     }
 
+    rlImGuiShutdown();
     CloseWindow();
 }

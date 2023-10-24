@@ -15,7 +15,8 @@ project "Core"
 
     includedirs {
         "src",
-        "../vendor/raylib/include"
+        "../vendor/raylib/include",
+        "../vendor/imgui"
     }
 
     libdirs {
@@ -23,7 +24,8 @@ project "Core"
     }
 
     links {
-        "raylibdll"
+        "raylibdll",
+        "ImGui"
     }
 
     filter "configurations:Debug"
