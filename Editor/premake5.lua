@@ -17,7 +17,8 @@ project "Editor"
         "src",
         "../vendor/raylib/include",
         "../vendor/imgui",
-        "../Core/src"
+        "../Core/src",
+        "../vendor/glm"
     }
 
     libdirs {

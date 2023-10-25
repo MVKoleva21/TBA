@@ -16,7 +16,8 @@ project "Core"
     includedirs {
         "src",
         "../vendor/raylib/include",
-        "../vendor/imgui"
+        "../vendor/imgui",
+        "../vendor/glm"
     }
 
     libdirs {
