@@ -13,6 +13,7 @@ namespace Core {
 	{
 		m_Window.reset(Window::CreateWindow(size.x, size.y, title));
 		m_Window->Init();
+		rlImGuiSetup(true);
 	}
 
 	void Application::Run()
@@ -33,6 +34,15 @@ namespace Core {
 				layer->OnUpdate();
 			}
 
+			rlImGuiBegin();
+
+			for(auto layer : m_LayerStack)
+			{ 
+				layer->OnImGuiRender();
+			}
+
+			rlImGuiEnd();
+
 			EndDrawing();
 		}
 
@@ -40,6 +50,9 @@ namespace Core {
 		{ 
 			layer->OnDetach();
 		}
+
+		rlImGuiShutdown();
+		CloseWindow();
 	}
 
 	void Application::ShouldWindowClose()

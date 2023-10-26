@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Core.h"
+#include <imgui.h>
 
 class EditorApplication : public Core::Application
 {
@@ -23,6 +24,15 @@ public:
 		ClearBackground(RAYWHITE);
 
 		DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+	}
+
+	void OnImGuiRender()
+	{
+		ImGui::Begin("Test Window");
+
+		ImGui::Text("This is a test window");
+
+		ImGui::End();
 	}
 };
 
