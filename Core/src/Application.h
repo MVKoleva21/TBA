@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <raylib.h>
 #include <rlImGui.h>
+#include <imgui.h>
 
 namespace Core {
 	class Application
