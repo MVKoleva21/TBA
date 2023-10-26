@@ -1,4 +1,7 @@
 #pragma once
+#include "pch.h"
+#include "Window.h"
+
 #include <glm/glm.hpp>
 #include <raylib.h>
 
@@ -9,19 +12,19 @@ namespace Core {
 		Application();
 		virtual ~Application() = default;
 
-		void Init(glm::vec2 size, const char* title);
+		void Init(glm::vec2 size, std::string title);
 		void Run();
 
 		static Application* Get() { return s_Instance; }
 
-		glm::vec2 GetSize() { return m_Size; }
+		std::shared_ptr<Window> const GetWindow() { return m_Window; }
 
 	private:
 		void ShouldWindowClose();
 
 	private:
 		inline static Application* s_Instance;
-		glm::vec2 m_Size;
+		std::shared_ptr<Window> m_Window;
 
 		bool m_IsRunning = true;
 	};

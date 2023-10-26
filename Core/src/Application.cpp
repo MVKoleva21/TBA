@@ -9,10 +9,10 @@ namespace Core {
 		s_Instance = this;
 	}
 
-	void Application::Init(glm::vec2 size, const char* title)
+	void Application::Init(glm::vec2 size, std::string title)
 	{
-		m_Size = size;
-		InitWindow(size.x, size.y, title);
+		m_Window.reset(Window::CreateWindow(size.x, size.y, title));
+		m_Window->Init();
 	}
 
 	void Application::Run()
