@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Application.h"
 
 namespace Core {
@@ -8,26 +9,50 @@ namespace Core {
 		s_Instance = this;
 	}
 
-	void Application::Init(glm::vec2 size, const char* title)
+	void Application::Init(glm::vec2 size, std::string title)
 	{
-		m_Size = size;
-		InitWindow(size.x, size.y, title);
+		m_Window.reset(Window::CreateWindow(size.x, size.y, title));
+		m_Window->Init();
+		rlImGuiSetup(true);
 	}
 
 	void Application::Run()
 	{
+		for(auto layer : m_LayerStack)
+		{ 
+			layer->OnAttach();
+		}
+
 		while (m_IsRunning)
 		{
 			ShouldWindowClose();
 
 			BeginDrawing();
 
-			ClearBackground(RAYWHITE);
+			for(auto layer : m_LayerStack)
+			{ 
+				layer->OnUpdate();
+			}
 
-			DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+			rlImGuiBegin();
+
+			for(auto layer : m_LayerStack)
+			{ 
+				layer->OnImGuiRender();
+			}
+
+			rlImGuiEnd();
 
 			EndDrawing();
 		}
+
+		for(auto layer : m_LayerStack)
+		{ 
+			layer->OnDetach();
+		}
+
+		rlImGuiShutdown();
+		CloseWindow();
 	}
 
 	void Application::ShouldWindowClose()

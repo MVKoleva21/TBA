@@ -32,11 +32,17 @@ project "ImGui"
         "vendor/imgui/imgui_widgets.cpp",
         "vendor/imgui/imstb_rectpack.h",
         "vendor/imgui/imstb_textedit.h",
-        "vendor/imgui/imstb_truetype.h"
+        "vendor/imgui/imstb_truetype.h",
+
+        "vendor/rlImGui/rlImGui.cpp",
+        "vendor/rlImGui/rlImGui.h",
+        "vendor/rlImGui/imgui_impl_raylib.h",
     }
 
     includedirs {
-        "vendor/imgui"
+        "vendor/imgui",
+        "vendor/rlImGui",
+        "vendor/raylib/include"
     }
 
     filter "configurations:Debug"

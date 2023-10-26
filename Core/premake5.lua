@@ -17,8 +17,12 @@ project "Core"
         "src",
         "../vendor/raylib/include",
         "../vendor/imgui",
-        "../vendor/glm"
+        "../vendor/glm",
+        "../vendor/rlImGui"
     }
+
+    pchheader "pch.h"
+    pchsource "src/pch.cpp"
 
     libdirs {
         "../vendor/raylib/lib"
