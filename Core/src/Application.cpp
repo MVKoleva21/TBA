@@ -17,17 +17,28 @@ namespace Core {
 
 	void Application::Run()
 	{
+		for(auto layer : m_LayerStack)
+		{ 
+			layer->OnAttach();
+		}
+
 		while (m_IsRunning)
 		{
 			ShouldWindowClose();
 
 			BeginDrawing();
 
-			ClearBackground(RAYWHITE);
-
-			DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+			for(auto layer : m_LayerStack)
+			{ 
+				layer->OnUpdate();
+			}
 
 			EndDrawing();
+		}
+
+		for(auto layer : m_LayerStack)
+		{ 
+			layer->OnDetach();
 		}
 	}
 
