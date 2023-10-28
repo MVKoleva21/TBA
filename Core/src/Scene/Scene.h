@@ -20,6 +20,18 @@ namespace Core {
 			m_SelectedEntity = entity;
 		}
 
+		template<typename T>
+		bool HasComponent(entt::entity entity)
+		{
+			return m_Registry.try_get<T>(entity) != nullptr;
+		}
+
+		template<typename T>
+		T& GetComponent(entt::entity entity)
+		{
+			return m_Registry.get<T>(entity);
+		}
+
 		entt::entity GetSelectedEntity()
 		{
 			return m_SelectedEntity;

@@ -5,6 +5,16 @@ namespace Editor {
 	{
 		m_FrameBuffer.reset(new Core::FrameBuffer);
 		m_FrameBuffer->Init(m_ViewPortSize.x, m_ViewPortSize.y);
+		
+		m_Scene.reset(new Core::Scene("SandBox"));
+
+		Core::Entity entityOne(m_Scene);
+		entityOne.AddComponent<Core::TagComponent>("Test entity one");
+		entityOne.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 0.0, 0.0), glm::vec3(100.0, 100.0, 100.0 ));
+
+		Core::Entity entityTwo(m_Scene);
+		entityTwo.AddComponent<Core::TagComponent>("Test entity two");
+		entityTwo.AddComponent<Core::TransformComponent>(glm::vec3(150.0, 150.0, 0.0), glm::vec3(100.0, 100.0, 100.0 ));
 	}
 
 	void EditorLayer::OnUpdate()
@@ -12,7 +22,12 @@ namespace Editor {
 		m_FrameBuffer->Bind();
 
 		ClearBackground(GRAY);
-		DrawText("Vankata is great", 0, 0, 69, PURPLE);
+
+		for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+		{
+			Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
+			DrawRectangle(transformComponent.Position.x, transformComponent.Position.y, transformComponent.Scale.x, transformComponent.Scale.y, PURPLE);
+		}
 
 		m_FrameBuffer->UnBind();
 	}
