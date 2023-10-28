@@ -18,6 +18,9 @@ namespace Core {
 
 	void Application::Run()
 	{
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 		for(auto layer : m_LayerStack)
 		{ 
 			layer->OnAttach();
@@ -27,14 +30,15 @@ namespace Core {
 		{
 			ShouldWindowClose();
 
-			BeginDrawing();
-
 			for(auto layer : m_LayerStack)
 			{ 
 				layer->OnUpdate();
 			}
 
+			BeginDrawing();
+
 			rlImGuiBegin();
+			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
 			for(auto layer : m_LayerStack)
 			{ 
