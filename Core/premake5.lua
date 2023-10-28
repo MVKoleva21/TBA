@@ -18,7 +18,8 @@ project "Core"
         "../vendor/raylib/include",
         "../vendor/imgui",
         "../vendor/glm",
-        "../vendor/rlImGui"
+        "../vendor/rlImGui",
+        "../vendor/entt"
     }
 
     pchheader "pch.h"
