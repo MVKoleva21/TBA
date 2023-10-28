@@ -36,5 +36,33 @@ namespace Editor {
 		rlImGuiImageRenderTexture(m_FrameBuffer->GetTexture().get());
 
 		ImGui::End();
+
+		ImGui::Begin("Scene Elements");
+	
+		if (ImGui::BeginPopupContextWindow())
+		{
+			if (ImGui::MenuItem("World"))
+			{
+				// Add world entity
+			}
+
+			if(ImGui::BeginMenu("Add entity"))
+			{ 
+				if (ImGui::MenuItem("Rabit"))
+				{
+					// Add rabit entity
+				}
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndPopup();
+		}
+
+		ImGui::End();
+
+		ImGui::Begin("Config");
+
+		ImGui::End();
 	}
 }
