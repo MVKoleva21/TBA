@@ -15,11 +15,6 @@ namespace Core {
 			return m_Registry.view<T>();
 		}
 
-		void SetSelectedEntity(entt::entity entity)
-		{
-			m_SelectedEntity = entity;
-		}
-
 		template<typename T>
 		bool HasComponent(entt::entity entity)
 		{
@@ -35,6 +30,11 @@ namespace Core {
 		entt::entity GetSelectedEntity()
 		{
 			return m_SelectedEntity;
+		}
+
+		void SetSelectedEntity(entt::entity entity)
+		{
+			m_SelectedEntity = entity;
 		}
 
 		std::string GetName() const { return m_SceneName; }

@@ -15,5 +15,6 @@ namespace Editor {
 		std::shared_ptr<Core::FrameBuffer> m_FrameBuffer;
 		glm::vec2 m_ViewPortSize = {GetScreenWidth(), GetScreenHeight()};
 		std::shared_ptr<Core::Scene> m_Scene;
+		
 	};
 }
