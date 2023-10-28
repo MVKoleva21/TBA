@@ -16,5 +16,6 @@ namespace Editor {
 		glm::vec2 m_ViewPortSize = {GetScreenWidth(), GetScreenHeight()};
 		std::shared_ptr<Core::Scene> m_Scene;
 		
+		std::shared_ptr<Camera3D> m_PerspectiveCamera;
 	};
 }
