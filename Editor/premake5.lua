@@ -19,7 +19,8 @@ project "Editor"
         "../vendor/imgui",
         "../Core/src",
         "../vendor/glm",
-        "../vendor/rlImGui"
+        "../vendor/rlImGui",
+        "../vendor/entt"
     }
 
     libdirs {
