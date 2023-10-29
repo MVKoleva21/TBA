@@ -23,30 +23,45 @@ namespace Editor {
 	{
 		m_FrameBuffer->Bind();
 
-		UpdateCamera(m_PerspectiveCamera.get(), CAMERA_ORBITAL);
-
 		ClearBackground(GRAY);
-	
-		BeginMode3D(*m_PerspectiveCamera);
 
-		for (auto& i : m_World->GetTiles())
+		if (!m_IsWorldEditEnabled)
 		{
-			if(i.Type == Core::TileType::Sand)
-				DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, YELLOW);
-			else if(i.Type == Core::TileType::Water)
-				DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, BLUE);
-			else if(i.Type == Core::TileType::Grass)
-				DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, GREEN);
-		}
+			UpdateCamera(m_PerspectiveCamera.get(), CAMERA_ORBITAL);
+		
+			BeginMode3D(*m_PerspectiveCamera);
 
-		for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+			for (auto& i : m_World->GetTiles())
+			{
+				if(i.Type == Core::TileType::Sand)
+					DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, YELLOW);
+				else if(i.Type == Core::TileType::Water)
+					DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, BLUE);
+				else if(i.Type == Core::TileType::Grass)
+					DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, GREEN);
+			}
+
+			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+			{
+				Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
+				DrawCube({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, PURPLE);
+				DrawCubeWires({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, MAGENTA);
+			}
+
+			EndMode3D();
+		}
+		else
 		{
-			Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
-			DrawCube({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, PURPLE);
-			DrawCubeWires({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, MAGENTA);
-		}
+			SetMouseOffset(m_SceneEntitiesSelectorWidth * -1, ImGui::GetFrameHeight() * -2);
 
-		EndMode3D();
+			for (int i = 0; i < 10; i++)
+			{
+				for (int j = 0; j < 10; j++)
+				{
+					DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, DARKGRAY);
+				}
+			}
+		}
 
 		m_FrameBuffer->UnBind();
 	}
@@ -58,15 +73,36 @@ namespace Editor {
 
 		if (ImGui::BeginMainMenuBar())
 		{
-			if (ImGui::MenuItem("Load World..."))
-			{
-				std::string path = Core::FilesystemWindow::OpenFile("YAML (*.yml)\0*.yml\0");
+			if (ImGui::MenuItem("World"))
+				ImGui::OpenPopup("World");
 
-				if(!path.empty())
-				{ 
-					std::cout << path << std::endl;
+			if(ImGui::BeginPopup("World"))
+			{
+				if (ImGui::MenuItem("Open.."))
+				{
+					std::string path = Core::FilesystemWindow::OpenFile("YAML (*.yml)\0*.yml\0");
+
+					if(!path.empty())
+					{ 
+						std::cout << path << std::endl;
+					}
 				}
+
+				if (ImGui::MenuItem("Save As.."))
+				{
+					std::string path = Core::FilesystemWindow::SaveFile("YAML (*.yml)\0*.yml\0");
+
+					if(!path.empty())
+					{ 
+						std::cout << path << std::endl;
+					}
+				}
+
+				ImGui::EndPopup();
 			}
+
+			if (ImGui::MenuItem("World Editor"))
+				m_IsWorldEditEnabled = !m_IsWorldEditEnabled;
 
 			ImGui::EndMainMenuBar();
 		}
@@ -87,6 +123,8 @@ namespace Editor {
 		ImGui::End();
 
 		ImGui::Begin("Scene Elements");
+
+		m_SceneEntitiesSelectorWidth = ImGui::GetWindowSize().x;
 	
 		if (ImGui::BeginPopupContextWindow())
 		{

@@ -19,5 +19,9 @@ namespace Editor {
 		std::shared_ptr<Camera3D> m_PerspectiveCamera;
 
 		std::shared_ptr<Core::World> m_World;
+
+		bool m_IsWorldEditEnabled = false;
+
+		uint32_t m_SceneEntitiesSelectorWidth = 0;
 	};
 }
