@@ -8,3 +8,5 @@
 #include "Scene/Components.h"
 #include "Scene/Entity.h"
 #include "Scene/Scene.h"
+
+#include "World.h"

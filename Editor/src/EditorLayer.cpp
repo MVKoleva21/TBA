@@ -15,6 +15,8 @@ namespace Editor {
 		m_PerspectiveCamera->up = Vector3({ 0.0f, 1.0f, 0.0f });
 		m_PerspectiveCamera->fovy = 45.0f;
 		m_PerspectiveCamera->projection = CAMERA_PERSPECTIVE;
+
+		m_World.reset(new Core::World);
 	}
 
 	void EditorLayer::OnUpdate()
@@ -27,14 +29,22 @@ namespace Editor {
 	
 		BeginMode3D(*m_PerspectiveCamera);
 
+		for (auto& i : m_World->GetTiles())
+		{
+			if(i.Type == Core::TileType::Sand)
+				DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, YELLOW);
+			else if(i.Type == Core::TileType::Water)
+				DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, BLUE);
+			else if(i.Type == Core::TileType::Grass)
+				DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, GREEN);
+		}
+
 		for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
 		{
 			Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
 			DrawCube({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, PURPLE);
 			DrawCubeWires({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, MAGENTA);
 		}
-
-		DrawGrid(100, 1.0f);
 
 		EndMode3D();
 
@@ -45,6 +55,16 @@ namespace Editor {
 	{
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.WindowPadding = ImVec2(0, 0);
+
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::MenuItem("Load World..."))
+			{
+
+			}
+
+			ImGui::EndMainMenuBar();
+		}
 
 		ImGui::Begin("Viewport");
 
@@ -65,11 +85,6 @@ namespace Editor {
 	
 		if (ImGui::BeginPopupContextWindow())
 		{
-			if (ImGui::MenuItem("World"))
-			{
-				// Add world entity
-			}
-
 			if(ImGui::BeginMenu("Add entity"))
 			{ 
 				if (ImGui::MenuItem("Mouse"))
@@ -110,8 +125,8 @@ namespace Editor {
 			ImGui::Spacing();
 
 			Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
-			ImGui::DragFloat3("Position: ", glm::value_ptr(transform.Position), 0.2f);
-			ImGui::DragFloat3("Scale: ", glm::value_ptr(transform.Scale), 0.2f);			
+			ImGui::DragFloat3("Position: ", glm::value_ptr(transform.Position), 0.2f, -10.0f, 9.0f);
+			ImGui::DragFloat3("Scale: ", glm::value_ptr(transform.Scale), 0.2f, -10.0f, 9.0f);			
 		}
 
 		ImGui::End();

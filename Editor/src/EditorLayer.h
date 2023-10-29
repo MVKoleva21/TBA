@@ -17,5 +17,7 @@ namespace Editor {
 		std::shared_ptr<Core::Scene> m_Scene;
 		
 		std::shared_ptr<Camera3D> m_PerspectiveCamera;
+
+		std::shared_ptr<Core::World> m_World;
 	};
 }
