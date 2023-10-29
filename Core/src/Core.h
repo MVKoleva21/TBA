@@ -10,3 +10,5 @@
 #include "Scene/Scene.h"
 
 #include "World.h"
+
+#include "Windows/FilesystemWindow.h"

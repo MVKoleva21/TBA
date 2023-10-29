@@ -60,7 +60,12 @@ namespace Editor {
 		{
 			if (ImGui::MenuItem("Load World..."))
 			{
+				std::string path = Core::FilesystemWindow::OpenFile("YAML (*.yml)\0*.yml\0");
 
+				if(!path.empty())
+				{ 
+					std::cout << path << std::endl;
+				}
 			}
 
 			ImGui::EndMainMenuBar();
