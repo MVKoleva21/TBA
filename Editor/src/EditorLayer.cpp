@@ -10,7 +10,7 @@ namespace Editor {
 		m_Scene.reset(new Core::Scene("SandBox"));
 
 		m_PerspectiveCamera.reset(new Camera3D{0.0});
-		m_PerspectiveCamera->position = Vector3({ 15.0f, 15.0f, 15.0f });
+		m_PerspectiveCamera->position = Vector3({ 10.0f, 10.0f, 10.0f });
 		m_PerspectiveCamera->target = Vector3({ 0.0f, 0.0f, 0.0f });
 		m_PerspectiveCamera->up = Vector3({ 0.0f, 1.0f, 0.0f });
 		m_PerspectiveCamera->fovy = 45.0f;
@@ -31,14 +31,22 @@ namespace Editor {
 		
 			BeginMode3D(*m_PerspectiveCamera);
 
-			for (auto& i : m_World->GetTiles())
+			uint8_t tileArrayIndex = 0;
+			for (int i = -5; i < 5; i++)
 			{
-				if(i.Type == Core::TileType::Sand)
-					DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, YELLOW);
-				else if(i.Type == Core::TileType::Water)
-					DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, BLUE);
-				else if(i.Type == Core::TileType::Grass)
-					DrawCube({i.XPosition, -0.5, i.YPositon}, 1.0f, 1.0f, 1.0f, GREEN);
+				for (int j = -5; j < 5; j++)
+				{
+					Core::WorldTile& tile = m_World->GetTiles()[tileArrayIndex];
+
+					if (tile.Type == Core::TileType::Sand)
+						DrawCube({(float)i, -0.5, (float)j}, 1.0f, 1.0f, 1.0f, YELLOW);
+					else if (tile.Type == Core::TileType::Water)
+						DrawCube({(float)i, -0.5, (float)j}, 1.0f, 1.0f, 1.0f, BLUE);
+					else if (tile.Type == Core::TileType::Grass)
+						DrawCube({(float)i, -0.5, (float)j}, 1.0f, 1.0f, 1.0f, GREEN);
+
+					tileArrayIndex++;
+				}
 			}
 
 			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
@@ -199,8 +207,8 @@ namespace Editor {
 				ImGui::Spacing();
 
 				Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
-				ImGui::DragFloat3("Position: ", glm::value_ptr(transform.Position), 0.2f, -10.0f, 9.0f);
-				ImGui::DragFloat3("Scale: ", glm::value_ptr(transform.Scale), 0.2f, -10.0f, 9.0f);			
+				ImGui::DragFloat3("Position: ", glm::value_ptr(transform.Position), 0.2f, -5.0f, 4.0f);
+				ImGui::DragFloat3("Scale: ", glm::value_ptr(transform.Scale), 0.2f, -5.0f, 4.0f);			
 			}
 		}
 		else
