@@ -19,7 +19,8 @@ project "Core"
         "../vendor/imgui",
         "../vendor/glm",
         "../vendor/rlImGui",
-        "../vendor/entt"
+        "../vendor/entt",
+        "../vendor/yml-cpp/include"
     }
 
     pchheader "pch.h"
@@ -31,7 +32,8 @@ project "Core"
 
     links {
         "raylibdll",
-        "ImGui"
+        "ImGui",
+        "YAML-CPP"
     }
 
     filter "configurations:Debug"

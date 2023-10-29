@@ -21,7 +21,8 @@ namespace Core {
 		~World() = default;
 
 		std::array<WorldTile, 100> GetTiles() { return m_Tiles; }
-		void LoadWorld(std::string path) {}
+		void LoadWorld(std::string path);
+		void SaveWorld(std::string path);
 
 		void PushTile(int index, WorldTile tile) { m_Tiles[index] = tile; }
 		

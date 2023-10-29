@@ -1,3 +1,401 @@
-
-
-  
+Tiles:
+  - Id: 0
+    TileType: 1
+    PositionX: 65.5
+    PositionY: 41
+  - Id: 1
+    TileType: 1
+    PositionX: 65.5
+    PositionY: 101
+  - Id: 2
+    TileType: 1
+    PositionX: 65.5
+    PositionY: 161
+  - Id: 3
+    TileType: 1
+    PositionX: 65.5
+    PositionY: 221
+  - Id: 4
+    TileType: 1
+    PositionX: 65.5
+    PositionY: 281
+  - Id: 5
+    TileType: 1
+    PositionX: 65.5
+    PositionY: 341
+  - Id: 6
+    TileType: 1
+    PositionX: 65.5
+    PositionY: 401
+  - Id: 7
+    TileType: 1
+    PositionX: 65.5
+    PositionY: 461
+  - Id: 8
+    TileType: 3
+    PositionX: 65.5
+    PositionY: 521
+  - Id: 9
+    TileType: 3
+    PositionX: 65.5
+    PositionY: 581
+  - Id: 10
+    TileType: 1
+    PositionX: 125.5
+    PositionY: 41
+  - Id: 11
+    TileType: 1
+    PositionX: 125.5
+    PositionY: 101
+  - Id: 12
+    TileType: 1
+    PositionX: 125.5
+    PositionY: 161
+  - Id: 13
+    TileType: 1
+    PositionX: 125.5
+    PositionY: 221
+  - Id: 14
+    TileType: 1
+    PositionX: 125.5
+    PositionY: 281
+  - Id: 15
+    TileType: 1
+    PositionX: 125.5
+    PositionY: 341
+  - Id: 16
+    TileType: 1
+    PositionX: 125.5
+    PositionY: 401
+  - Id: 17
+    TileType: 3
+    PositionX: 125.5
+    PositionY: 461
+  - Id: 18
+    TileType: 3
+    PositionX: 125.5
+    PositionY: 521
+  - Id: 19
+    TileType: 3
+    PositionX: 125.5
+    PositionY: 581
+  - Id: 20
+    TileType: 1
+    PositionX: 185.5
+    PositionY: 41
+  - Id: 21
+    TileType: 1
+    PositionX: 185.5
+    PositionY: 101
+  - Id: 22
+    TileType: 1
+    PositionX: 185.5
+    PositionY: 161
+  - Id: 23
+    TileType: 1
+    PositionX: 185.5
+    PositionY: 221
+  - Id: 24
+    TileType: 1
+    PositionX: 185.5
+    PositionY: 281
+  - Id: 25
+    TileType: 1
+    PositionX: 185.5
+    PositionY: 341
+  - Id: 26
+    TileType: 3
+    PositionX: 185.5
+    PositionY: 401
+  - Id: 27
+    TileType: 3
+    PositionX: 185.5
+    PositionY: 461
+  - Id: 28
+    TileType: 3
+    PositionX: 185.5
+    PositionY: 521
+  - Id: 29
+    TileType: 3
+    PositionX: 185.5
+    PositionY: 581
+  - Id: 30
+    TileType: 1
+    PositionX: 245.5
+    PositionY: 41
+  - Id: 31
+    TileType: 1
+    PositionX: 245.5
+    PositionY: 101
+  - Id: 32
+    TileType: 1
+    PositionX: 245.5
+    PositionY: 161
+  - Id: 33
+    TileType: 1
+    PositionX: 245.5
+    PositionY: 221
+  - Id: 34
+    TileType: 2
+    PositionX: 245.5
+    PositionY: 281
+  - Id: 35
+    TileType: 2
+    PositionX: 245.5
+    PositionY: 341
+  - Id: 36
+    TileType: 2
+    PositionX: 245.5
+    PositionY: 401
+  - Id: 37
+    TileType: 2
+    PositionX: 245.5
+    PositionY: 461
+  - Id: 38
+    TileType: 3
+    PositionX: 245.5
+    PositionY: 521
+  - Id: 39
+    TileType: 3
+    PositionX: 245.5
+    PositionY: 581
+  - Id: 40
+    TileType: 1
+    PositionX: 305.5
+    PositionY: 41
+  - Id: 41
+    TileType: 1
+    PositionX: 305.5
+    PositionY: 101
+  - Id: 42
+    TileType: 1
+    PositionX: 305.5
+    PositionY: 161
+  - Id: 43
+    TileType: 2
+    PositionX: 305.5
+    PositionY: 221
+  - Id: 44
+    TileType: 2
+    PositionX: 305.5
+    PositionY: 281
+  - Id: 45
+    TileType: 2
+    PositionX: 305.5
+    PositionY: 341
+  - Id: 46
+    TileType: 2
+    PositionX: 305.5
+    PositionY: 401
+  - Id: 47
+    TileType: 3
+    PositionX: 305.5
+    PositionY: 461
+  - Id: 48
+    TileType: 3
+    PositionX: 305.5
+    PositionY: 521
+  - Id: 49
+    TileType: 3
+    PositionX: 305.5
+    PositionY: 581
+  - Id: 50
+    TileType: 1
+    PositionX: 365.5
+    PositionY: 41
+  - Id: 51
+    TileType: 1
+    PositionX: 365.5
+    PositionY: 101
+  - Id: 52
+    TileType: 1
+    PositionX: 365.5
+    PositionY: 161
+  - Id: 53
+    TileType: 2
+    PositionX: 365.5
+    PositionY: 221
+  - Id: 54
+    TileType: 2
+    PositionX: 365.5
+    PositionY: 281
+  - Id: 55
+    TileType: 2
+    PositionX: 365.5
+    PositionY: 341
+  - Id: 56
+    TileType: 3
+    PositionX: 365.5
+    PositionY: 401
+  - Id: 57
+    TileType: 3
+    PositionX: 365.5
+    PositionY: 461
+  - Id: 58
+    TileType: 3
+    PositionX: 365.5
+    PositionY: 521
+  - Id: 59
+    TileType: 3
+    PositionX: 365.5
+    PositionY: 581
+  - Id: 60
+    TileType: 1
+    PositionX: 425.5
+    PositionY: 41
+  - Id: 61
+    TileType: 1
+    PositionX: 425.5
+    PositionY: 101
+  - Id: 62
+    TileType: 2
+    PositionX: 425.5
+    PositionY: 161
+  - Id: 63
+    TileType: 2
+    PositionX: 425.5
+    PositionY: 221
+  - Id: 64
+    TileType: 2
+    PositionX: 425.5
+    PositionY: 281
+  - Id: 65
+    TileType: 3
+    PositionX: 425.5
+    PositionY: 341
+  - Id: 66
+    TileType: 3
+    PositionX: 425.5
+    PositionY: 401
+  - Id: 67
+    TileType: 3
+    PositionX: 425.5
+    PositionY: 461
+  - Id: 68
+    TileType: 3
+    PositionX: 425.5
+    PositionY: 521
+  - Id: 69
+    TileType: 3
+    PositionX: 425.5
+    PositionY: 581
+  - Id: 70
+    TileType: 1
+    PositionX: 485.5
+    PositionY: 41
+  - Id: 71
+    TileType: 1
+    PositionX: 485.5
+    PositionY: 101
+  - Id: 72
+    TileType: 2
+    PositionX: 485.5
+    PositionY: 161
+  - Id: 73
+    TileType: 2
+    PositionX: 485.5
+    PositionY: 221
+  - Id: 74
+    TileType: 2
+    PositionX: 485.5
+    PositionY: 281
+  - Id: 75
+    TileType: 3
+    PositionX: 485.5
+    PositionY: 341
+  - Id: 76
+    TileType: 3
+    PositionX: 485.5
+    PositionY: 401
+  - Id: 77
+    TileType: 3
+    PositionX: 485.5
+    PositionY: 461
+  - Id: 78
+    TileType: 3
+    PositionX: 485.5
+    PositionY: 521
+  - Id: 79
+    TileType: 3
+    PositionX: 485.5
+    PositionY: 581
+  - Id: 80
+    TileType: 1
+    PositionX: 545.5
+    PositionY: 41
+  - Id: 81
+    TileType: 1
+    PositionX: 545.5
+    PositionY: 101
+  - Id: 82
+    TileType: 2
+    PositionX: 545.5
+    PositionY: 161
+  - Id: 83
+    TileType: 2
+    PositionX: 545.5
+    PositionY: 221
+  - Id: 84
+    TileType: 3
+    PositionX: 545.5
+    PositionY: 281
+  - Id: 85
+    TileType: 3
+    PositionX: 545.5
+    PositionY: 341
+  - Id: 86
+    TileType: 3
+    PositionX: 545.5
+    PositionY: 401
+  - Id: 87
+    TileType: 3
+    PositionX: 545.5
+    PositionY: 461
+  - Id: 88
+    TileType: 3
+    PositionX: 545.5
+    PositionY: 521
+  - Id: 89
+    TileType: 3
+    PositionX: 545.5
+    PositionY: 581
+  - Id: 90
+    TileType: 1
+    PositionX: 605.5
+    PositionY: 41
+  - Id: 91
+    TileType: 2
+    PositionX: 605.5
+    PositionY: 101
+  - Id: 92
+    TileType: 2
+    PositionX: 605.5
+    PositionY: 161
+  - Id: 93
+    TileType: 2
+    PositionX: 605.5
+    PositionY: 221
+  - Id: 94
+    TileType: 3
+    PositionX: 605.5
+    PositionY: 281
+  - Id: 95
+    TileType: 3
+    PositionX: 605.5
+    PositionY: 341
+  - Id: 96
+    TileType: 3
+    PositionX: 605.5
+    PositionY: 401
+  - Id: 97
+    TileType: 3
+    PositionX: 605.5
+    PositionY: 461
+  - Id: 98
+    TileType: 3
+    PositionX: 605.5
+    PositionY: 521
+  - Id: 99
+    TileType: 3
+    PositionX: 605.5
+    PositionY: 581

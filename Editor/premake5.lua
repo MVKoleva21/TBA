@@ -20,7 +20,8 @@ project "Editor"
         "../Core/src",
         "../vendor/glm",
         "../vendor/rlImGui",
-        "../vendor/entt"
+        "../vendor/entt",
+        "../vendor/yml-cpp/include"
     }
 
     libdirs {

@@ -85,7 +85,7 @@ namespace Editor {
 						else if(m_SelectedTileType == Core::TileType::Grass)
 							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, GREEN);
 
-						if (IsMouseButtonPressed(0))
+						if (IsMouseButtonDown(0))
 						{
 							m_World->PushTile(i * 10 + j, Core::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
 						}
@@ -119,10 +119,8 @@ namespace Editor {
 				{
 					std::string path = Core::FilesystemWindow::OpenFile("YAML (*.yml)\0*.yml\0");
 
-					if(!path.empty())
-					{ 
-						std::cout << path << std::endl;
-					}
+					if (!path.empty())
+						m_World->LoadWorld(path);
 				}
 
 				if (ImGui::MenuItem("Save As.."))
@@ -130,9 +128,7 @@ namespace Editor {
 					std::string path = Core::FilesystemWindow::SaveFile("YAML (*.yml)\0*.yml\0");
 
 					if(!path.empty())
-					{ 
-						std::cout << path << std::endl;
-					}
+						m_World->SaveWorld(path);
 				}
 
 				ImGui::EndPopup();
@@ -171,7 +167,7 @@ namespace Editor {
 				{
 					Core::Entity mouse(m_Scene);
 					mouse.AddComponent<Core::TagComponent>("Mouse");
-					mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 0.5, 0.0), glm::vec3(1.0, 1.0, 1.0 ));
+					mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 0.5, 0.0), glm::vec3(0.5, 0.5, 0.5));
 				}
 
 				ImGui::EndMenu();
@@ -207,8 +203,8 @@ namespace Editor {
 				ImGui::Spacing();
 
 				Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
-				ImGui::DragFloat3("Position: ", glm::value_ptr(transform.Position), 0.2f, -5.0f, 4.0f);
-				ImGui::DragFloat3("Scale: ", glm::value_ptr(transform.Scale), 0.2f, -5.0f, 4.0f);			
+				ImGui::DragFloat3("Position ", glm::value_ptr(transform.Position), 0.2f, -5.0f, 4.0f);
+				ImGui::DragFloat3("Scale ", glm::value_ptr(transform.Scale), 0.2f, -5.0f, 4.0f);			
 			}
 		}
 		else
