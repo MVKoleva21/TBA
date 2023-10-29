@@ -54,14 +54,43 @@ namespace Editor {
 		{
 			SetMouseOffset(m_SceneEntitiesSelectorWidth * -1, ImGui::GetFrameHeight() * -2);
 
+			for (auto& i : m_World->GetTiles())
+			{
+				if (i.Type == Core::TileType::Sand)
+					DrawRectangle(i.XPosition, i.YPositon, 60, 60, YELLOW);
+				else if (i.Type == Core::TileType::Water)
+					DrawRectangle(i.XPosition, i.YPositon, 60, 60, BLUE);
+				else if (i.Type == Core::TileType::Grass)
+					DrawRectangle(i.XPosition, i.YPositon, 60, 60, GREEN);
+			}
+
 			for (int i = 0; i < 10; i++)
 			{
 				for (int j = 0; j < 10; j++)
 				{
-					DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, DARKGRAY);
+					if (CheckCollisionPointRec(GetMousePosition(), { ((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60 }))
+					{
+						if(m_SelectedTileType == Core::TileType::Sand)
+							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, YELLOW);
+						else if(m_SelectedTileType == Core::TileType::Water)
+							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, BLUE);
+						else if(m_SelectedTileType == Core::TileType::Grass)
+							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, GREEN);
+
+						if (IsMouseButtonPressed(0))
+						{
+							m_World->PushTile(i * 10 + j, Core::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
+						}
+					}
+					else
+					{
+						DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, DARKGRAY);
+					}	
 				}
 			}
 		}
+
+		SetMouseOffset(0, 0);
 
 		m_FrameBuffer->UnBind();
 	}
@@ -160,16 +189,29 @@ namespace Editor {
 
 		ImGui::Begin("Config");
 
-		if (m_Scene->GetSelectedEntity() != entt::null)
+		if (!m_IsWorldEditEnabled)
 		{
-			Core::TagComponent& tag = m_Scene->GetComponent<Core::TagComponent>(m_Scene->GetSelectedEntity());
-			ImGui::Text(((std::string)"Tag: " + tag.Tag).c_str());
+			if (m_Scene->GetSelectedEntity() != entt::null)
+			{
+				Core::TagComponent& tag = m_Scene->GetComponent<Core::TagComponent>(m_Scene->GetSelectedEntity());
+				ImGui::Text(((std::string)"Tag: " + tag.Tag).c_str());
 
-			ImGui::Spacing();
+				ImGui::Spacing();
 
-			Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
-			ImGui::DragFloat3("Position: ", glm::value_ptr(transform.Position), 0.2f, -10.0f, 9.0f);
-			ImGui::DragFloat3("Scale: ", glm::value_ptr(transform.Scale), 0.2f, -10.0f, 9.0f);			
+				Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
+				ImGui::DragFloat3("Position: ", glm::value_ptr(transform.Position), 0.2f, -10.0f, 9.0f);
+				ImGui::DragFloat3("Scale: ", glm::value_ptr(transform.Scale), 0.2f, -10.0f, 9.0f);			
+			}
+		}
+		else
+		{
+			if (ImGui::Selectable("Sand", m_SelectedTileType == Core::TileType::Sand))
+				m_SelectedTileType = Core::TileType::Sand;
+			else if (ImGui::Selectable("Grass", m_SelectedTileType == Core::TileType::Grass))
+				m_SelectedTileType = Core::TileType::Grass;
+			else if (ImGui::Selectable("Water", m_SelectedTileType == Core::TileType::Water))
+				m_SelectedTileType = Core::TileType::Water;
+
 		}
 
 		ImGui::End();

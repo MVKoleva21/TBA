@@ -20,10 +20,12 @@ namespace Core {
 		World() = default;
 		~World() = default;
 
-		std::vector<WorldTile> GetTiles() { return m_Tiles; }
+		std::array<WorldTile, 100> GetTiles() { return m_Tiles; }
 		void LoadWorld(std::string path) {}
+
+		void PushTile(int index, WorldTile tile) { m_Tiles[index] = tile; }
 		
 	private:
-		std::vector<WorldTile> m_Tiles;
+		std::array<WorldTile, 100> m_Tiles;
 	};
 }

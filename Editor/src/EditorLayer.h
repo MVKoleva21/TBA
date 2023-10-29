@@ -23,5 +23,7 @@ namespace Editor {
 		bool m_IsWorldEditEnabled = false;
 
 		uint32_t m_SceneEntitiesSelectorWidth = 0;
+
+		Core::TileType m_SelectedTileType = Core::TileType::None;
 	};
 }
