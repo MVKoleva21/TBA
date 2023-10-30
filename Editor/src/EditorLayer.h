@@ -25,5 +25,6 @@ namespace Editor {
 		uint32_t m_SceneEntitiesSelectorWidth = 0;
 
 		Core::TileType m_SelectedTileType = Core::TileType::None;
+		uint32_t m_SelectedLayer = 0;
 	};
 }

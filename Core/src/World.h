@@ -9,24 +9,31 @@ namespace Core {
 
 	struct WorldTile
 	{
-		float XPosition;
-		float YPositon;
+		float XPosition = 0;
+		float YPositon = 0;
 		TileType Type = TileType::None;
+	};
+
+	struct WorldLayer
+	{
+		std::array<WorldTile, 100> Tiles;
 	};
 
 	class World
 	{
 	public:
-		World() = default;
+		World();
 		~World() = default;
 
-		std::array<WorldTile, 100> GetTiles() { return m_Tiles; }
+		std::array<WorldTile, 100> GetTiles(uint32_t layer) { return m_WorldLayers[layer].Tiles; }
+		std::vector<WorldLayer>& GetLayers() { return m_WorldLayers; }
 		void LoadWorld(std::string path);
 		void SaveWorld(std::string path);
 
-		void PushTile(int index, WorldTile tile) { m_Tiles[index] = tile; }
+		void PushLayer(WorldLayer layer) { m_WorldLayers.push_back(layer); }
+		void PushTile(uint32_t layer, uint32_t index, WorldTile tile) { m_WorldLayers[layer].Tiles[index] = tile; }
 		
 	private:
-		std::array<WorldTile, 100> m_Tiles;
+		std::vector<WorldLayer> m_WorldLayers;
 	};
 }

@@ -5,21 +5,31 @@
 #include <yaml-cpp/yaml.h>
 
 namespace Core {
+	World::World()
+	{
+		WorldLayer layerZero;
+		m_WorldLayers.push_back(layerZero);
+	}
 
 	void World::LoadWorld(std::string path) 
 	{
 		YAML::Node worldFile = YAML::LoadFile(path);
-		auto tiles = worldFile["Tiles"];
+		auto layers = worldFile["Layers"];
 
-		for (auto tile : tiles)
+		for (auto layer : layers)
 		{
-			WorldTile newTile;
-			newTile.Type = (TileType)tile["TileType"].as<uint32_t>();
-			newTile.XPosition = tile["PositionX"].as<float>();
-			newTile.YPositon = tile["PositionY"].as<float>();
+			WorldLayer newLayer;
+			for (auto tile : layer["Layer"])
+			{
+				WorldTile newTile;
+				newTile.Type = (TileType)tile["TileType"].as<uint32_t>();
+				newTile.XPosition = tile["PositionX"].as<float>();
+				newTile.YPositon = tile["PositionY"].as<float>();
 
-			uint32_t id = tile["Id"].as<uint32_t>();
-			m_Tiles[id] = newTile;
+				newLayer.Tiles[tile["Id"].as<uint32_t>()] = newTile;
+			}
+
+			m_WorldLayers.push_back(newLayer);
 		}
 	}
 
@@ -27,15 +37,22 @@ namespace Core {
 	{
 		YAML::Emitter out;
 		out << YAML::BeginMap;
-		out << YAML::Key << "Tiles" << YAML::Value << YAML::BeginSeq;
+		out << YAML::Key << "Layers" << YAML::Value << YAML::BeginSeq;
 
-		for (size_t i = 0; i < m_Tiles.size(); i++)
+		for (size_t i = 0; i < m_WorldLayers.size(); i++)
 		{
 			out << YAML::BeginMap;
-			out << YAML::Key << "Id" << YAML::Value << i;
-			out << YAML::Key << "TileType" << YAML::Value << (uint32_t)m_Tiles[i].Type;
-			out << YAML::Key << "PositionX" << YAML::Value << m_Tiles[i].XPosition;
-			out << YAML::Key << "PositionY" << YAML::Value << m_Tiles[i].YPositon;
+			out << YAML::Key << "Layer" << YAML::Value << YAML::BeginSeq;
+			for (size_t j = 0; j < m_WorldLayers[i].Tiles.size(); j++)
+			{
+				out << YAML::BeginMap;
+				out << YAML::Key << "Id" << YAML::Value << j;
+				out << YAML::Key << "TileType" << YAML::Value << (uint32_t)m_WorldLayers[i].Tiles[j].Type;
+				out << YAML::Key << "PositionX" << YAML::Value << m_WorldLayers[i].Tiles[j].XPosition;
+				out << YAML::Key << "PositionY" << YAML::Value << m_WorldLayers[i].Tiles[j].YPositon;
+				out << YAML::EndMap;
+			}	
+			out << YAML::EndSeq;
 			out << YAML::EndMap;
 		}
 
