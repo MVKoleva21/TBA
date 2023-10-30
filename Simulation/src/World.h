@@ -1,7 +1,11 @@
 #pragma once
-#include "pch.h"
+#include <vector>
+#include <cstdint>
+#include <string>
+#include <fstream>
+#include <array>
 
-namespace Core {
+namespace Simulation {
 	enum class TileType 
 	{
 		None, Sand, Water, Grass	

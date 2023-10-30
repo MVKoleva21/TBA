@@ -1,5 +1,7 @@
 #pragma once
 #include "Core.h"
+#include "World.h"
+
 #include <imgui.h>
 #include <glm/glm.hpp>
 
@@ -18,13 +20,13 @@ namespace Editor {
 		
 		std::shared_ptr<Camera3D> m_PerspectiveCamera;
 
-		std::shared_ptr<Core::World> m_World;
+		std::shared_ptr<Simulation::World> m_World;
 
 		bool m_IsWorldEditEnabled = false;
 
 		uint32_t m_SceneEntitiesSelectorWidth = 0;
 
-		Core::TileType m_SelectedTileType = Core::TileType::None;
+		Simulation::TileType m_SelectedTileType = Simulation::TileType::None;
 		uint32_t m_SelectedLayer = 0;
 	};
 }

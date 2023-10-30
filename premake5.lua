@@ -88,3 +88,4 @@ project "YAML-CPP"
 
 include "Core"
 include "Editor"
+include "Simulation"

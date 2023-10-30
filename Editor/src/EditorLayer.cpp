@@ -16,7 +16,7 @@ namespace Editor {
 		m_PerspectiveCamera->fovy = 45.0f;
 		m_PerspectiveCamera->projection = CAMERA_PERSPECTIVE;
 
-		m_World.reset(new Core::World);
+		m_World.reset(new Simulation::World);
 	}
 
 	void EditorLayer::OnUpdate()
@@ -38,19 +38,19 @@ namespace Editor {
 				{
 					for (int j = -5; j < 5; j++)
 					{
-						Core::WorldTile& tile = m_World->GetTiles(k)[tileArrayIndex];
+						Simulation::WorldTile& tile = m_World->GetTiles(k)[tileArrayIndex];
 
-						if (tile.Type == Core::TileType::Sand)
+						if (tile.Type == Simulation::TileType::Sand)
 						{
 							DrawCube({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, YELLOW);
 							DrawCubeWires({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, GOLD);
 						}
-						else if (tile.Type == Core::TileType::Water)
+						else if (tile.Type == Simulation::TileType::Water)
 						{
 							DrawCube({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, BLUE);
 							DrawCubeWires({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, DARKBLUE);
 						}
-						else if (tile.Type == Core::TileType::Grass)
+						else if (tile.Type == Simulation::TileType::Grass)
 						{
 							DrawCube({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, GREEN);
 							DrawCubeWires({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, DARKGREEN);
@@ -78,11 +78,11 @@ namespace Editor {
 
 			for (auto& i : m_World->GetTiles(m_SelectedLayer))
 			{
-				if (i.Type == Core::TileType::Sand)
+				if (i.Type == Simulation::TileType::Sand)
 					DrawRectangle(i.XPosition, i.YPositon, 60, 60, YELLOW);
-				else if (i.Type == Core::TileType::Water)
+				else if (i.Type == Simulation::TileType::Water)
 					DrawRectangle(i.XPosition, i.YPositon, 60, 60, BLUE);
-				else if (i.Type == Core::TileType::Grass)
+				else if (i.Type == Simulation::TileType::Grass)
 					DrawRectangle(i.XPosition, i.YPositon, 60, 60, GREEN);
 			}
 
@@ -92,16 +92,16 @@ namespace Editor {
 				{
 					if (CheckCollisionPointRec(GetMousePosition(), { ((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60 }))
 					{
-						if(m_SelectedTileType == Core::TileType::Sand)
+						if(m_SelectedTileType == Simulation::TileType::Sand)
 							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, YELLOW);
-						else if(m_SelectedTileType == Core::TileType::Water)
+						else if(m_SelectedTileType == Simulation::TileType::Water)
 							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, BLUE);
-						else if(m_SelectedTileType == Core::TileType::Grass)
+						else if(m_SelectedTileType == Simulation::TileType::Grass)
 							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, GREEN);
 
 						if (IsMouseButtonDown(0))
 						{
-							m_World->PushTile(m_SelectedLayer, i * 10 + j, Core::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
+							m_World->PushTile(m_SelectedLayer, i * 10 + j, Simulation::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
 						}
 					}
 					else
@@ -223,12 +223,12 @@ namespace Editor {
 		}
 		else
 		{
-			if (ImGui::Selectable("Sand", m_SelectedTileType == Core::TileType::Sand))
-				m_SelectedTileType = Core::TileType::Sand;
-			else if (ImGui::Selectable("Grass", m_SelectedTileType == Core::TileType::Grass))
-				m_SelectedTileType = Core::TileType::Grass;
-			else if (ImGui::Selectable("Water", m_SelectedTileType == Core::TileType::Water))
-				m_SelectedTileType = Core::TileType::Water;
+			if (ImGui::Selectable("Sand", m_SelectedTileType == Simulation::TileType::Sand))
+				m_SelectedTileType = Simulation::TileType::Sand;
+			else if (ImGui::Selectable("Grass", m_SelectedTileType == Simulation::TileType::Grass))
+				m_SelectedTileType = Simulation::TileType::Grass;
+			else if (ImGui::Selectable("Water", m_SelectedTileType == Simulation::TileType::Water))
+				m_SelectedTileType = Simulation::TileType::Water;
 
 		}
 
@@ -252,7 +252,7 @@ namespace Editor {
 
 			if (ImGui::Button("Add Layer"))
 			{
-				Core::WorldLayer newLayer;
+				Simulation::WorldLayer newLayer;
 				m_World->PushLayer(newLayer);
 			}
 
