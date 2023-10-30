@@ -10,33 +10,109 @@ namespace Editor {
 		m_Scene.reset(new Core::Scene("SandBox"));
 
 		m_PerspectiveCamera.reset(new Camera3D{0.0});
-		m_PerspectiveCamera->position = Vector3({ 15.0f, 15.0f, 15.0f });
+		m_PerspectiveCamera->position = Vector3({ 10.0f, 10.0f, 10.0f });
 		m_PerspectiveCamera->target = Vector3({ 0.0f, 0.0f, 0.0f });
 		m_PerspectiveCamera->up = Vector3({ 0.0f, 1.0f, 0.0f });
 		m_PerspectiveCamera->fovy = 45.0f;
 		m_PerspectiveCamera->projection = CAMERA_PERSPECTIVE;
+
+		m_World.reset(new Core::World);
 	}
 
 	void EditorLayer::OnUpdate()
 	{
 		m_FrameBuffer->Bind();
 
-		UpdateCamera(m_PerspectiveCamera.get(), CAMERA_ORBITAL);
-
 		ClearBackground(GRAY);
-	
-		BeginMode3D(*m_PerspectiveCamera);
 
-		for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+		if (!m_IsWorldEditEnabled)
 		{
-			Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
-			DrawCube({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, PURPLE);
-			DrawCubeWires({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, MAGENTA);
+			UpdateCamera(m_PerspectiveCamera.get(), CAMERA_ORBITAL);
+		
+			BeginMode3D(*m_PerspectiveCamera);
+
+			uint8_t tileArrayIndex = 0;
+			for (int k = 0; k < m_World->GetLayers().size(); k++)
+			{
+				for (int i = -5; i < 5; i++)
+				{
+					for (int j = -5; j < 5; j++)
+					{
+						Core::WorldTile& tile = m_World->GetTiles(k)[tileArrayIndex];
+
+						if (tile.Type == Core::TileType::Sand)
+						{
+							DrawCube({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, YELLOW);
+							DrawCubeWires({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, GOLD);
+						}
+						else if (tile.Type == Core::TileType::Water)
+						{
+							DrawCube({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, BLUE);
+							DrawCubeWires({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, DARKBLUE);
+						}
+						else if (tile.Type == Core::TileType::Grass)
+						{
+							DrawCube({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, GREEN);
+							DrawCubeWires({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, DARKGREEN);
+						}
+
+						tileArrayIndex++;
+					}
+				}
+
+				tileArrayIndex = 0;
+			}	
+
+			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+			{
+				Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
+				DrawCube({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, PURPLE);
+				DrawCubeWires({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, MAGENTA);
+			}
+
+			EndMode3D();
+		}
+		else
+		{
+			SetMouseOffset(m_SceneEntitiesSelectorWidth * -1, ImGui::GetFrameHeight() * -2);
+
+			for (auto& i : m_World->GetTiles(m_SelectedLayer))
+			{
+				if (i.Type == Core::TileType::Sand)
+					DrawRectangle(i.XPosition, i.YPositon, 60, 60, YELLOW);
+				else if (i.Type == Core::TileType::Water)
+					DrawRectangle(i.XPosition, i.YPositon, 60, 60, BLUE);
+				else if (i.Type == Core::TileType::Grass)
+					DrawRectangle(i.XPosition, i.YPositon, 60, 60, GREEN);
+			}
+
+			for (int i = 0; i < 10; i++)
+			{
+				for (int j = 0; j < 10; j++)
+				{
+					if (CheckCollisionPointRec(GetMousePosition(), { ((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60 }))
+					{
+						if(m_SelectedTileType == Core::TileType::Sand)
+							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, YELLOW);
+						else if(m_SelectedTileType == Core::TileType::Water)
+							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, BLUE);
+						else if(m_SelectedTileType == Core::TileType::Grass)
+							DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, GREEN);
+
+						if (IsMouseButtonDown(0))
+						{
+							m_World->PushTile(m_SelectedLayer, i * 10 + j, Core::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
+						}
+					}
+					else
+					{
+						DrawRectangleLines(((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, 60, 60, DARKGRAY);
+					}	
+				}
+			}
 		}
 
-		DrawGrid(100, 1.0f);
-
-		EndMode3D();
+		SetMouseOffset(0, 0);
 
 		m_FrameBuffer->UnBind();
 	}
@@ -45,6 +121,38 @@ namespace Editor {
 	{
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.WindowPadding = ImVec2(0, 0);
+
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::MenuItem("World"))
+				ImGui::OpenPopup("World");
+
+			if(ImGui::BeginPopup("World"))
+			{
+				if (ImGui::MenuItem("Open.."))
+				{
+					std::string path = Core::FilesystemWindow::OpenFile("YAML (*.yml)\0*.yml\0");
+
+					if (!path.empty())
+						m_World->LoadWorld(path);
+				}
+
+				if (ImGui::MenuItem("Save As.."))
+				{
+					std::string path = Core::FilesystemWindow::SaveFile("YAML (*.yml)\0*.yml\0");
+
+					if(!path.empty())
+						m_World->SaveWorld(path);
+				}
+
+				ImGui::EndPopup();
+			}
+
+			if (ImGui::MenuItem("World Editor"))
+				m_IsWorldEditEnabled = !m_IsWorldEditEnabled;
+
+			ImGui::EndMainMenuBar();
+		}
 
 		ImGui::Begin("Viewport");
 
@@ -62,21 +170,18 @@ namespace Editor {
 		ImGui::End();
 
 		ImGui::Begin("Scene Elements");
+
+		m_SceneEntitiesSelectorWidth = ImGui::GetWindowSize().x;
 	
 		if (ImGui::BeginPopupContextWindow())
 		{
-			if (ImGui::MenuItem("World"))
-			{
-				// Add world entity
-			}
-
 			if(ImGui::BeginMenu("Add entity"))
 			{ 
 				if (ImGui::MenuItem("Mouse"))
 				{
 					Core::Entity mouse(m_Scene);
 					mouse.AddComponent<Core::TagComponent>("Mouse");
-					mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 0.5, 0.0), glm::vec3(1.0, 1.0, 1.0 ));
+					mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.5, 0.5, 0.5));
 				}
 
 				ImGui::EndMenu();
@@ -102,18 +207,56 @@ namespace Editor {
 
 		ImGui::Begin("Config");
 
-		if (m_Scene->GetSelectedEntity() != entt::null)
+		if (!m_IsWorldEditEnabled)
 		{
-			Core::TagComponent& tag = m_Scene->GetComponent<Core::TagComponent>(m_Scene->GetSelectedEntity());
-			ImGui::Text(((std::string)"Tag: " + tag.Tag).c_str());
+			if (m_Scene->GetSelectedEntity() != entt::null)
+			{
+				Core::TagComponent& tag = m_Scene->GetComponent<Core::TagComponent>(m_Scene->GetSelectedEntity());
+				ImGui::Text(((std::string)"Tag: " + tag.Tag).c_str());
 
-			ImGui::Spacing();
+				ImGui::Spacing();
 
-			Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
-			ImGui::DragFloat3("Position: ", glm::value_ptr(transform.Position), 0.2f);
-			ImGui::DragFloat3("Scale: ", glm::value_ptr(transform.Scale), 0.2f);			
+				Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
+				ImGui::DragFloat3("Position ", glm::value_ptr(transform.Position), 0.2f, -5.0f, 4.0f);
+				ImGui::DragFloat3("Scale ", glm::value_ptr(transform.Scale), 0.2f, -5.0f, 4.0f);			
+			}
+		}
+		else
+		{
+			if (ImGui::Selectable("Sand", m_SelectedTileType == Core::TileType::Sand))
+				m_SelectedTileType = Core::TileType::Sand;
+			else if (ImGui::Selectable("Grass", m_SelectedTileType == Core::TileType::Grass))
+				m_SelectedTileType = Core::TileType::Grass;
+			else if (ImGui::Selectable("Water", m_SelectedTileType == Core::TileType::Water))
+				m_SelectedTileType = Core::TileType::Water;
+
 		}
 
 		ImGui::End();
+
+		if (m_IsWorldEditEnabled)
+		{
+			ImGui::Begin("Layers");
+
+			uint8_t index = 0;
+			for (auto& layer : m_World->GetLayers())
+			{
+				ImGui::PushID(index);
+
+				if (ImGui::Selectable(((std::string)"Layer: " + std::to_string(index)).c_str(), m_SelectedLayer == index))
+					m_SelectedLayer = index;
+
+				index++;
+				ImGui::PopID();
+			}
+
+			if (ImGui::Button("Add Layer"))
+			{
+				Core::WorldLayer newLayer;
+				m_World->PushLayer(newLayer);
+			}
+
+			ImGui::End();
+		}
 	}
 }

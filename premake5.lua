@@ -53,5 +53,38 @@ project "ImGui"
         runtime "Release"
         optimize "On"
 
+project "YAML-CPP"
+    kind "StaticLib"
+    language "C++"
+    cppdialect "C++20"
+    staticruntime "on"
+    systemversion "latest"
+    location "vendor/yml-cpp"
+
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files {
+        "vendor/yml-cpp/src/**.h",
+        "vendor/yml-cpp/src/**.cpp"
+    }
+
+    includedirs {
+        "vendor/yml-cpp/include",
+        "vendor/yml-cpp/src"
+    }
+
+    defines {
+        "YAML_CPP_STATIC_DEFINE"
+    }
+
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "On"
+
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "On"
+
 include "Core"
 include "Editor"
