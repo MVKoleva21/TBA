@@ -28,5 +28,8 @@ namespace Editor {
 
 		Simulation::TileType m_SelectedTileType = Simulation::TileType::None;
 		uint32_t m_SelectedLayer = 0;
+
+		int32_t m_MouseToSpawn = 0;
+		bool m_IsRunning = false;
 	};
 }

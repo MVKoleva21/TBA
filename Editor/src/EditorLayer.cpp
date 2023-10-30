@@ -151,6 +151,9 @@ namespace Editor {
 			if (ImGui::MenuItem("World Editor"))
 				m_IsWorldEditEnabled = !m_IsWorldEditEnabled;
 
+			if (ImGui::Button("Run", { 30, 15 }))
+				m_IsRunning = !m_IsRunning;
+
 			ImGui::EndMainMenuBar();
 		}
 
@@ -167,29 +170,40 @@ namespace Editor {
 
 		rlImGuiImageRenderTexture(m_FrameBuffer->GetTexture().get());
 
+		if(m_IsRunning)
+		{ 
+			for (int i = 0; i < m_MouseToSpawn; i++)
+			{
+				Core::Entity mouse(m_Scene);
+				mouse.AddComponent<Core::TagComponent>("Mouse");
+				mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.5, 0.5, 0.5));
+			}
+			m_MouseToSpawn = 0;
+		}
+
 		ImGui::End();
 
 		ImGui::Begin("Scene Elements");
 
 		m_SceneEntitiesSelectorWidth = ImGui::GetWindowSize().x;
 	
-		if (ImGui::BeginPopupContextWindow())
-		{
-			if(ImGui::BeginMenu("Add entity"))
-			{ 
-				if (ImGui::MenuItem("Mouse"))
-				{
-					Core::Entity mouse(m_Scene);
-					mouse.AddComponent<Core::TagComponent>("Mouse");
-					mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.5, 0.5, 0.5));
-				}
+		//if (ImGui::BeginPopupContextWindow())
+		//{
+		//	if(ImGui::BeginMenu("Add entity"))
+		//	{ 
+		//		if (ImGui::MenuItem("Mouse"))
+		//		{
+		//			Core::Entity mouse(m_Scene);
+		//			mouse.AddComponent<Core::TagComponent>("Mouse");
+		//			mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.5, 0.5, 0.5));
+		//		}
 
-				ImGui::EndMenu();
-			}
+		//		ImGui::EndMenu();
+		//	}
 
-			ImGui::EndPopup();
+		//	ImGui::EndPopup();
 	
-		}
+		//}
 
 		for (auto& i : m_Scene->GetEntities<Core::TagComponent>())
 		{
@@ -217,8 +231,8 @@ namespace Editor {
 				ImGui::Spacing();
 
 				Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
-				ImGui::DragFloat3("Position ", glm::value_ptr(transform.Position), 0.2f, -5.0f, 4.0f);
-				ImGui::DragFloat3("Scale ", glm::value_ptr(transform.Scale), 0.2f, -5.0f, 4.0f);			
+				ImGui::DragFloat3("Position", glm::value_ptr(transform.Position), 0.2f, -5.0f, 4.0f);
+				ImGui::DragFloat3("Scale", glm::value_ptr(transform.Scale), 0.2f, -5.0f, 4.0f);			
 			}
 		}
 		else
@@ -243,7 +257,7 @@ namespace Editor {
 			{
 				ImGui::PushID(index);
 
-				if (ImGui::Selectable(((std::string)"Layer: " + std::to_string(index)).c_str(), m_SelectedLayer == index))
+				if (ImGui::Selectable(((std::string)"Layer" + std::to_string(index)).c_str(), m_SelectedLayer == index))
 					m_SelectedLayer = index;
 
 				index++;
@@ -257,6 +271,16 @@ namespace Editor {
 			}
 
 			ImGui::End();
+		}
+		else
+		{ 
+			ImGui::Begin("Animals");
+
+			ImGui::Spacing();
+			ImGui::DragInt("Mouses", &m_MouseToSpawn, 1.0, 0, 100);
+			ImGui::Spacing();
+
+			ImGui::End();	
 		}
 	}
 }
