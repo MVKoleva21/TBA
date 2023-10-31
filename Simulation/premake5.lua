@@ -1,5 +1,5 @@
-project "Editor"
-    kind "ConsoleApp"
+project "Simulation"
+    kind "StaticLib"
     language "C++"
     cppdialect "C++20"
     staticruntime "on"
@@ -17,12 +17,10 @@ project "Editor"
         "src",
         "../vendor/raylib/include",
         "../vendor/imgui",
-        "../Core/src",
         "../vendor/glm",
         "../vendor/rlImGui",
         "../vendor/entt",
-        "../vendor/yml-cpp/include",
-        "../Simulation/src"
+        "../vendor/yml-cpp/include"
     }
 
     libdirs {
@@ -30,13 +28,10 @@ project "Editor"
     }
 
     links {
-        "Core",
         "raylibdll",
         "ImGui",
-        "Simulation",
+        "YAML-CPP"
     }
-
-    postbuildcommands { ("{COPY} ..\\vendor\\raylib\\lib\\raylib.dll ..\\bin\\" .. outputdir .. "\\Editor") }    
 
     filter "configurations:Debug"
         runtime "Debug"

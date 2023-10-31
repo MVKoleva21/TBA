@@ -1,10 +1,9 @@
-#include "pch.h"
 #include "World.h"
 
 #define YAML_CPP_STATIC_DEFINE
 #include <yaml-cpp/yaml.h>
 
-namespace Core {
+namespace Simulation {
 	World::World()
 	{
 		WorldLayer layerZero;
@@ -13,6 +12,7 @@ namespace Core {
 
 	void World::LoadWorld(std::string path) 
 	{
+		m_WorldLayers.erase(m_WorldLayers.begin());
 		YAML::Node worldFile = YAML::LoadFile(path);
 		auto layers = worldFile["Layers"];
 

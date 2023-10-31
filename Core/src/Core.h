@@ -9,6 +9,4 @@
 #include "Scene/Entity.h"
 #include "Scene/Scene.h"
 
-#include "World.h"
-
 #include "Windows/FilesystemWindow.h"
