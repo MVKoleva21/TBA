@@ -174,9 +174,27 @@ namespace Editor {
 		{ 
 			for (int i = 0; i < m_MouseToSpawn; i++)
 			{
+				float xPosition = GetRandomValue(-5, 4);
+				float yPosition = GetRandomValue(-5, 4);
+				float zPosition = 0;
+
+				float arrayPosition = (xPosition + 5) * 10 + (yPosition + 5);
+
+				while (m_World->GetLayers()[zPosition != m_World->GetLayers().size() - 1? zPosition + 1: zPosition].Tiles[arrayPosition].Type != Simulation::TileType::None)
+				{
+					zPosition++;
+				}
+
+				while (m_World->GetLayers()[zPosition].Tiles[arrayPosition].Type == Simulation::TileType::Water)
+				{
+					xPosition = GetRandomValue(-5, 4);
+					yPosition = GetRandomValue(-5, 4);
+					arrayPosition = (xPosition + 5) * 10 + (yPosition + 5);
+				}
+
 				Core::Entity mouse(m_Scene);
 				mouse.AddComponent<Core::TagComponent>("Mouse");
-				mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.5, 0.5, 0.5));
+				mouse.AddComponent<Core::TransformComponent>(glm::vec3(xPosition, 0.8f + zPosition, yPosition), glm::vec3(0.5, 0.5, 0.5));
 			}
 			m_MouseToSpawn = 0;
 		}
@@ -187,24 +205,6 @@ namespace Editor {
 
 		m_SceneEntitiesSelectorWidth = ImGui::GetWindowSize().x;
 	
-		//if (ImGui::BeginPopupContextWindow())
-		//{
-		//	if(ImGui::BeginMenu("Add entity"))
-		//	{ 
-		//		if (ImGui::MenuItem("Mouse"))
-		//		{
-		//			Core::Entity mouse(m_Scene);
-		//			mouse.AddComponent<Core::TagComponent>("Mouse");
-		//			mouse.AddComponent<Core::TransformComponent>(glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.5, 0.5, 0.5));
-		//		}
-
-		//		ImGui::EndMenu();
-		//	}
-
-		//	ImGui::EndPopup();
-	
-		//}
-
 		for (auto& i : m_Scene->GetEntities<Core::TagComponent>())
 		{
 			ImGui::PushID((uint32_t)i);
