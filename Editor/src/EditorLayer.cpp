@@ -70,6 +70,37 @@ namespace Editor {
 				DrawCubeWires({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, MAGENTA);
 			}
 
+			if (m_IsRunning)
+			{
+				for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+				{
+					Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
+					uint32_t direction = GetRandomValue(1, 4);
+
+					switch (direction)
+					{
+					case 1:
+						if(transformComponent.Position.x < 4.0f)
+							transformComponent.Position.x += 0.008;
+						break;
+					case 2:
+						if(transformComponent.Position.x > -5.0f)
+							transformComponent.Position.x -= 0.008;
+						break;
+					case 3:
+						if(transformComponent.Position.z < 4.0f)
+							transformComponent.Position.z += 0.008;
+						break;
+					case 4:
+						if(transformComponent.Position.z > -5.0f)
+							transformComponent.Position.z -= 0.008;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+
 			EndMode3D();
 		}
 		else
@@ -180,10 +211,8 @@ namespace Editor {
 
 				float arrayPosition = (xPosition + 5) * 10 + (yPosition + 5);
 
-				while (m_World->GetLayers()[zPosition != m_World->GetLayers().size() - 1? zPosition + 1: zPosition].Tiles[arrayPosition].Type != Simulation::TileType::None)
-				{
+				while (zPosition + 1 != m_World->GetLayers().size() && m_World->GetLayers()[zPosition + 1].Tiles[arrayPosition].Type != Simulation::TileType::None)
 					zPosition++;
-				}
 
 				while (m_World->GetLayers()[zPosition].Tiles[arrayPosition].Type == Simulation::TileType::Water)
 				{
