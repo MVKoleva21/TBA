@@ -36,6 +36,8 @@ namespace Simulation {
 
 		void PushLayer(WorldLayer layer) { m_WorldLayers.push_back(layer); }
 		void PushTile(uint32_t layer, uint32_t index, WorldTile tile) { m_WorldLayers[layer].Tiles[index] = tile; }
+
+		void PopLayer(uint32_t index) { m_WorldLayers.erase(m_WorldLayers.begin() + index - 1); }
 		
 	private:
 		std::vector<WorldLayer> m_WorldLayers;

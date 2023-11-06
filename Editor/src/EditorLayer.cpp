@@ -266,7 +266,9 @@ namespace Editor {
 		}
 		else
 		{
-			if (ImGui::Selectable("Sand", m_SelectedTileType == Simulation::TileType::Sand))
+			if (ImGui::Selectable("None", m_SelectedTileType == Simulation::TileType::None))
+				m_SelectedTileType = Simulation::TileType::None;
+			else if (ImGui::Selectable("Sand", m_SelectedTileType == Simulation::TileType::Sand))
 				m_SelectedTileType = Simulation::TileType::Sand;
 			else if (ImGui::Selectable("Grass", m_SelectedTileType == Simulation::TileType::Grass))
 				m_SelectedTileType = Simulation::TileType::Grass;
@@ -288,6 +290,11 @@ namespace Editor {
 
 				if (ImGui::Selectable(((std::string)"Layer" + std::to_string(index)).c_str(), m_SelectedLayer == index))
 					m_SelectedLayer = index;
+
+				if (ImGui::Button("Remove Layer"))
+				{
+					m_World->PopLayer(index);
+				}
 
 				index++;
 				ImGui::PopID();
