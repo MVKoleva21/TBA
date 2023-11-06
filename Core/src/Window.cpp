@@ -11,7 +11,6 @@ namespace Core {
 
 	void Window::Init()
 	{
-		SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 		InitWindow(m_Width, m_Height, m_Title.c_str());
 	}
 }

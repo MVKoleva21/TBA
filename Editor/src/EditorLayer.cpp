@@ -107,6 +107,28 @@ namespace Editor {
 		{
 			SetMouseOffset(m_SceneEntitiesSelectorWidth * -1, ImGui::GetFrameHeight() * -2);
 
+			if (m_SelectedLayer > 0)
+			{
+				uint32_t opacity = 20;
+				for (auto& layer : m_World->GetLayers())
+				{
+					for (auto& i : layer.Tiles)
+					{
+						if (i.Type == Simulation::TileType::Sand)
+							DrawRectangle(i.XPosition, i.YPositon, 60, 60, Color{ 253, 249, 0, (unsigned char)opacity });
+						else if (i.Type == Simulation::TileType::Water)
+							DrawRectangle(i.XPosition, i.YPositon, 60, 60, Color{ 0, 121, 241, (unsigned char)opacity });
+						else if (i.Type == Simulation::TileType::Grass)
+							DrawRectangle(i.XPosition, i.YPositon, 60, 60, Color{ 0, 228, 48, (unsigned char)opacity });
+					}
+
+					if (opacity < 255)
+						opacity += 50;
+					else
+						opacity = 200;
+				}
+			}	
+
 			for (auto& i : m_World->GetTiles(m_SelectedLayer))
 			{
 				if (i.Type == Simulation::TileType::Sand)
