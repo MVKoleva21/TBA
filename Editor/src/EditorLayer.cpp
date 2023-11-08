@@ -1,5 +1,6 @@
 #include "EditorLayer.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "SimulationComponents.h"
 
 namespace Editor {
 	void EditorLayer::OnAttach()
@@ -31,14 +32,15 @@ namespace Editor {
 		
 			BeginMode3D(*m_PerspectiveCamera);
 
-			uint8_t tileArrayIndex = 0;
+			uint8_t tileIndexX = 0;
+			uint8_t tileIndexY = 0;
 			for (int k = 0; k < m_World->GetLayers().size(); k++)
 			{
 				for (int i = -5; i < 5; i++)
 				{
 					for (int j = -5; j < 5; j++)
 					{
-						Simulation::WorldTile& tile = m_World->GetTiles(k)[tileArrayIndex];
+						Simulation::WorldTile& tile = m_World->GetTiles(k)[tileIndexX][tileIndexY];
 
 						if (tile.Type == Simulation::TileType::Sand)
 						{
@@ -56,11 +58,14 @@ namespace Editor {
 							DrawCubeWires({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, DARKGREEN);
 						}
 
-						tileArrayIndex++;
+						tileIndexX++;
 					}
+					tileIndexY++;
+					tileIndexX = 0;
 				}
 
-				tileArrayIndex = 0;
+				tileIndexX = 0;
+				tileIndexY = 0;
 			}	
 
 			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
@@ -75,28 +80,47 @@ namespace Editor {
 				for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
 				{
 					Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
+					Simulation::TileLocation& tileLocation = m_Scene->GetComponent<Simulation::TileLocation>(i);
+
 					uint32_t direction = GetRandomValue(1, 4);
 
-					switch (direction)
+					//switch (direction)
+					//{
+					//case 1:
+					//	if (transformComponent.Position.x < 4.0f)
+					//	{
+					//		transformComponent.Position.x += 0.01;
+					//	}
+					//	break;
+					//case 2:
+					//	if(transformComponent.Position.x > -5.0f)
+					//		transformComponent.Position.x -= 0.01;
+					//	break;
+					//case 3:
+					//	if(transformComponent.Position.z < 4.0f)
+					//		transformComponent.Position.z += 0.01;
+					//	break;
+					//case 4:
+					//	if(transformComponent.Position.z > -5.0f)
+					//		transformComponent.Position.z -= 0.01;
+					//	break;
+					//default:
+					//	break;
+					//}
+
+					tileLocation.ArrayPosX = ceil(transformComponent.Position.z + 5);
+					tileLocation.ArrayPosY = ceil(transformComponent.Position.x + 5);
+
+					if (tileLocation.Layer + 1 != m_World->GetLayers().size() && m_World->GetLayers()[tileLocation.Layer + 1].Tiles[tileLocation.ArrayPosX][tileLocation.ArrayPosY].Type != Simulation::TileType::None)
 					{
-					case 1:
-						if(transformComponent.Position.x < 4.0f)
-							transformComponent.Position.x += 0.008;
-						break;
-					case 2:
-						if(transformComponent.Position.x > -5.0f)
-							transformComponent.Position.x -= 0.008;
-						break;
-					case 3:
-						if(transformComponent.Position.z < 4.0f)
-							transformComponent.Position.z += 0.008;
-						break;
-					case 4:
-						if(transformComponent.Position.z > -5.0f)
-							transformComponent.Position.z -= 0.008;
-						break;
-					default:
-						break;
+						transformComponent.Position.y += 1.0f;
+						tileLocation.Layer += 1;
+					}
+
+					if (tileLocation.Layer > 0 && m_World->GetLayers()[tileLocation.Layer - 1].Tiles[tileLocation.ArrayPosX][tileLocation.ArrayPosY].Type == Simulation::TileType::None)
+					{
+						transformComponent.Position.y -= 1.0f;
+						tileLocation.Layer -= 1;
 					}
 				}
 			}
@@ -114,12 +138,15 @@ namespace Editor {
 				{
 					for (auto& i : layer.Tiles)
 					{
-						if (i.Type == Simulation::TileType::Sand)
-							DrawRectangle(i.XPosition, i.YPositon, 60, 60, Color{ 253, 249, 0, (unsigned char)opacity });
-						else if (i.Type == Simulation::TileType::Water)
-							DrawRectangle(i.XPosition, i.YPositon, 60, 60, Color{ 0, 121, 241, (unsigned char)opacity });
-						else if (i.Type == Simulation::TileType::Grass)
-							DrawRectangle(i.XPosition, i.YPositon, 60, 60, Color{ 0, 228, 48, (unsigned char)opacity });
+						for (auto& j : i)
+						{
+							if (j.Type == Simulation::TileType::Sand)
+								DrawRectangle(j.XPosition, j.YPositon, 60, 60, Color{ 253, 249, 0, (unsigned char)opacity });
+							else if (j.Type == Simulation::TileType::Water)
+								DrawRectangle(j.XPosition, j.YPositon, 60, 60, Color{ 0, 121, 241, (unsigned char)opacity });
+							else if (j.Type == Simulation::TileType::Grass)
+								DrawRectangle(j.XPosition, j.YPositon, 60, 60, Color{ 0, 228, 48, (unsigned char)opacity });
+						}	
 					}
 
 					if (opacity < 255)
@@ -131,12 +158,15 @@ namespace Editor {
 
 			for (auto& i : m_World->GetTiles(m_SelectedLayer))
 			{
-				if (i.Type == Simulation::TileType::Sand)
-					DrawRectangle(i.XPosition, i.YPositon, 60, 60, YELLOW);
-				else if (i.Type == Simulation::TileType::Water)
-					DrawRectangle(i.XPosition, i.YPositon, 60, 60, BLUE);
-				else if (i.Type == Simulation::TileType::Grass)
-					DrawRectangle(i.XPosition, i.YPositon, 60, 60, GREEN);
+				for (auto& j : i)
+				{
+					if (j.Type == Simulation::TileType::Sand)
+						DrawRectangle(j.XPosition, j.YPositon, 60, 60, YELLOW);
+					else if (j.Type == Simulation::TileType::Water)
+						DrawRectangle(j.XPosition, j.YPositon, 60, 60, BLUE);
+					else if (j.Type == Simulation::TileType::Grass)
+						DrawRectangle(j.XPosition, j.YPositon, 60, 60, GREEN);	
+				}	
 			}
 
 			for (int i = 0; i < 10; i++)
@@ -154,7 +184,7 @@ namespace Editor {
 
 						if (IsMouseButtonDown(0))
 						{
-							m_World->PushTile(m_SelectedLayer, i * 10 + j, Simulation::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
+							m_World->PushTile(m_SelectedLayer, i, j, Simulation::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
 						}
 					}
 					else
@@ -231,21 +261,25 @@ namespace Editor {
 				float yPosition = GetRandomValue(-5, 4);
 				float zPosition = 0;
 
-				float arrayPosition = (xPosition + 5) * 10 + (yPosition + 5);
+				float arrayPosX = xPosition + 5;
+				float arrayPosY = yPosition + 5;
 
-				while (zPosition + 1 != m_World->GetLayers().size() && m_World->GetLayers()[zPosition + 1].Tiles[arrayPosition].Type != Simulation::TileType::None)
+				while (zPosition + 1 != m_World->GetLayers().size() && m_World->GetLayers()[zPosition + 1].Tiles[arrayPosY][arrayPosX].Type != Simulation::TileType::None)
 					zPosition++;
 
-				while (m_World->GetLayers()[zPosition].Tiles[arrayPosition].Type == Simulation::TileType::Water)
+				while (m_World->GetLayers()[zPosition].Tiles[arrayPosY][arrayPosX].Type == Simulation::TileType::Water)
 				{
 					xPosition = GetRandomValue(-5, 4);
 					yPosition = GetRandomValue(-5, 4);
-					arrayPosition = (xPosition + 5) * 10 + (yPosition + 5);
+
+					arrayPosX = xPosition + 5;
+					arrayPosY = yPosition + 5;
 				}
 
 				Core::Entity mouse(m_Scene);
 				mouse.AddComponent<Core::TagComponent>("Mouse");
 				mouse.AddComponent<Core::TransformComponent>(glm::vec3(xPosition, 0.8f + zPosition, yPosition), glm::vec3(0.5, 0.5, 0.5));
+				mouse.AddComponent<Simulation::TileLocation>(arrayPosX, arrayPosY, zPosition);
 			}
 			m_MouseToSpawn = 0;
 		}
