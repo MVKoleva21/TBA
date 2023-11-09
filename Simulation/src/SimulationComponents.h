@@ -2,6 +2,11 @@
 #include <cstdint>
 
 namespace Simulation {
+	enum class AnimalsColors
+	{
+		None, Gray, Black, White
+	};
+
 	struct TileLocation
 	{
 		uint32_t ArrayPosX = 0;
@@ -13,6 +18,16 @@ namespace Simulation {
 			ArrayPosX = arrayPosX;
 			ArrayPosY = arrayPosY;
 			Layer = zIndex;
+		}
+	};
+
+	struct ColorComponent
+	{
+		AnimalsColors RabbitColor = AnimalsColors::None;
+
+		ColorComponent(AnimalsColors color)
+		{
+			RabbitColor = color;
 		}
 	};
 }
