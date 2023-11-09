@@ -1,6 +1,7 @@
 #include "EditorLayer.h"
 #include <glm/gtc/type_ptr.hpp>
 #include "SimulationComponents.h"
+#include "Models.h"
 
 namespace Editor {
 	void EditorLayer::OnAttach()
@@ -18,6 +19,8 @@ namespace Editor {
 		m_PerspectiveCamera->projection = CAMERA_PERSPECTIVE;
 
 		m_World.reset(new Simulation::World);
+
+		m_Models.reset(new Simulation::Models);
 	}
 
 	void EditorLayer::OnUpdate()
@@ -71,8 +74,14 @@ namespace Editor {
 			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
 			{
 				Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
-				DrawCube({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, PURPLE);
-				DrawCubeWires({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, MAGENTA);
+				Simulation::ColorComponent& colorComponent = m_Scene->GetComponent<Simulation::ColorComponent>(i);
+
+				if(colorComponent.RabbitColor == Simulation::AnimalsColors::Gray)
+					DrawModelEx(*m_Models->GetGrayRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
+				else if(colorComponent.RabbitColor == Simulation::AnimalsColors::Black)
+					DrawModelEx(*m_Models->GetBlackRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
+				else if(colorComponent.RabbitColor == Simulation::AnimalsColors::White)
+					DrawModelEx(*m_Models->GetWhiteRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
 			}
 
 			if (m_IsRunning)
@@ -83,33 +92,9 @@ namespace Editor {
 					Simulation::TileLocation& tileLocation = m_Scene->GetComponent<Simulation::TileLocation>(i);
 
 					uint32_t direction = GetRandomValue(1, 4);
-
-					//switch (direction)
-					//{
-					//case 1:
-					//	if (transformComponent.Position.x < 4.0f)
-					//	{
-					//		transformComponent.Position.x += 0.01;
-					//	}
-					//	break;
-					//case 2:
-					//	if(transformComponent.Position.x > -5.0f)
-					//		transformComponent.Position.x -= 0.01;
-					//	break;
-					//case 3:
-					//	if(transformComponent.Position.z < 4.0f)
-					//		transformComponent.Position.z += 0.01;
-					//	break;
-					//case 4:
-					//	if(transformComponent.Position.z > -5.0f)
-					//		transformComponent.Position.z -= 0.01;
-					//	break;
-					//default:
-					//	break;
-					//}
-
-					tileLocation.ArrayPosX = ceil(transformComponent.Position.z + 5);
-					tileLocation.ArrayPosY = ceil(transformComponent.Position.x + 5);
+				
+					tileLocation.ArrayPosX = round(transformComponent.Position.z + 5);
+					tileLocation.ArrayPosY = round(transformComponent.Position.x + 5);
 
 					if (tileLocation.Layer + 1 != m_World->GetLayers().size() && m_World->GetLayers()[tileLocation.Layer + 1].Tiles[tileLocation.ArrayPosX][tileLocation.ArrayPosY].Type != Simulation::TileType::None)
 					{
@@ -255,7 +240,7 @@ namespace Editor {
 
 		if(m_IsRunning)
 		{ 
-			for (int i = 0; i < m_MouseToSpawn; i++)
+			for (int i = 0; i < m_RabbitsToSpawn; i++)
 			{
 				float xPosition = GetRandomValue(-5, 4);
 				float yPosition = GetRandomValue(-5, 4);
@@ -276,12 +261,15 @@ namespace Editor {
 					arrayPosY = yPosition + 5;
 				}
 
-				Core::Entity mouse(m_Scene);
-				mouse.AddComponent<Core::TagComponent>("Mouse");
-				mouse.AddComponent<Core::TransformComponent>(glm::vec3(xPosition, 0.8f + zPosition, yPosition), glm::vec3(0.5, 0.5, 0.5));
-				mouse.AddComponent<Simulation::TileLocation>(arrayPosX, arrayPosY, zPosition);
+				uint32_t color = GetRandomValue(1, 3);
+				Core::Entity rabbit(m_Scene);
+				rabbit.AddComponent<Core::TagComponent>("Rabbit");
+				rabbit.AddComponent<Core::TransformComponent>(glm::vec3(xPosition, 0.5f + zPosition, yPosition), 0.0f);
+				rabbit.AddComponent<Simulation::TileLocation>(arrayPosX, arrayPosY, zPosition);
+				rabbit.AddComponent<Simulation::ColorComponent>((Simulation::AnimalsColors)color);
+				
 			}
-			m_MouseToSpawn = 0;
+			m_RabbitsToSpawn = 0;
 		}
 
 		ImGui::End();
@@ -317,7 +305,6 @@ namespace Editor {
 
 				Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
 				ImGui::DragFloat3("Position", glm::value_ptr(transform.Position), 0.2f, -5.0f, 4.0f);
-				ImGui::DragFloat3("Scale", glm::value_ptr(transform.Scale), 0.2f, -5.0f, 4.0f);			
 			}
 		}
 		else
@@ -369,7 +356,7 @@ namespace Editor {
 			ImGui::Begin("Animals");
 
 			ImGui::Spacing();
-			ImGui::DragInt("Mouses", &m_MouseToSpawn, 1.0, 0, 100);
+			ImGui::DragInt("Rabbits", &m_RabbitsToSpawn, 1.0, 0, 100);
 			ImGui::Spacing();
 
 			ImGui::End();	

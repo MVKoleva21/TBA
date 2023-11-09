@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "World.h"
+#include "Models.h"
 
 #include <imgui.h>
 #include <glm/glm.hpp>
@@ -29,7 +30,9 @@ namespace Editor {
 		Simulation::TileType m_SelectedTileType = Simulation::TileType::None;
 		uint32_t m_SelectedLayer = 0;
 
-		int32_t m_MouseToSpawn = 0;
+		int32_t m_RabbitsToSpawn = 0;
 		bool m_IsRunning = false;
+
+		std::shared_ptr<Simulation::Models> m_Models = nullptr;
 	};
 }

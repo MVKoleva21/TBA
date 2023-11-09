@@ -16,12 +16,12 @@ namespace Core {
 	struct TransformComponent
 	{
 		glm::vec3 Position = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 Scale = { 0.0f, 0.0f, 0.0f };
+		float Rotation = 0.0f;
 
-		TransformComponent(glm::vec3 position, glm::vec3 scale)
+		TransformComponent(glm::vec3 position, float rotation)
 		{
 			Position = position;
-			Scale = scale;
+			Rotation = rotation;
 		}
 	};
 }
