@@ -16,6 +16,7 @@ namespace Simulation {
 		float XPosition = 0;
 		float YPositon = 0;
 		TileType Type = TileType::None;
+		bool IsThereEntity = false;
 	};
 
 	struct WorldLayer

@@ -84,31 +84,31 @@ namespace Editor {
 					DrawModelEx(*m_Models->GetWhiteRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
 			}
 
-			if (m_IsRunning)
-			{
-				for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
-				{
-					Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
-					Simulation::TileLocation& tileLocation = m_Scene->GetComponent<Simulation::TileLocation>(i);
+			//if (m_IsRunning)
+			//{
+			//	for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+			//	{
+			//		Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
+			//		Simulation::TileLocation& tileLocation = m_Scene->GetComponent<Simulation::TileLocation>(i);
 
-					uint32_t direction = GetRandomValue(1, 4);
-				
-					tileLocation.ArrayPosX = round(transformComponent.Position.z + 5);
-					tileLocation.ArrayPosY = round(transformComponent.Position.x + 5);
+			//		uint32_t direction = GetRandomValue(1, 4);
+			//	
+			//		tileLocation.ArrayPosX = round(transformComponent.Position.z + 5);
+			//		tileLocation.ArrayPosY = round(transformComponent.Position.x + 5);
 
-					if (tileLocation.Layer + 1 != m_World->GetLayers().size() && m_World->GetLayers()[tileLocation.Layer + 1].Tiles[tileLocation.ArrayPosX][tileLocation.ArrayPosY].Type != Simulation::TileType::None)
-					{
-						transformComponent.Position.y += 1.0f;
-						tileLocation.Layer += 1;
-					}
+			//		if (tileLocation.Layer + 1 != m_World->GetLayers().size() && m_World->GetLayers()[tileLocation.Layer + 1].Tiles[tileLocation.ArrayPosX][tileLocation.ArrayPosY].Type != Simulation::TileType::None)
+			//		{
+			//			transformComponent.Position.y += 1.0f;
+			//			tileLocation.Layer += 1;
+			//		}
 
-					if (tileLocation.Layer > 0 && m_World->GetLayers()[tileLocation.Layer - 1].Tiles[tileLocation.ArrayPosX][tileLocation.ArrayPosY].Type == Simulation::TileType::None)
-					{
-						transformComponent.Position.y -= 1.0f;
-						tileLocation.Layer -= 1;
-					}
-				}
-			}
+			//		if (tileLocation.Layer > 0 && m_World->GetLayers()[tileLocation.Layer - 1].Tiles[tileLocation.ArrayPosX][tileLocation.ArrayPosY].Type == Simulation::TileType::None)
+			//		{
+			//			transformComponent.Position.y -= 1.0f;
+			//			tileLocation.Layer -= 1;
+			//		}
+			//	}
+			//}
 
 			EndMode3D();
 		}
@@ -238,36 +238,42 @@ namespace Editor {
 
 		rlImGuiImageRenderTexture(m_FrameBuffer->GetTexture().get());
 
-		if(m_IsRunning)
-		{ 
-			for (int i = 0; i < m_RabbitsToSpawn; i++)
+		if (m_IsRunning)
+		{
+			for (int j = 0; j < m_RabbitsToSpawn; j++)
 			{
-				float xPosition = GetRandomValue(-5, 4);
-				float yPosition = GetRandomValue(-5, 4);
-				float zPosition = 0;
-
-				float arrayPosX = xPosition + 5;
-				float arrayPosY = yPosition + 5;
-
-				while (zPosition + 1 != m_World->GetLayers().size() && m_World->GetLayers()[zPosition + 1].Tiles[arrayPosY][arrayPosX].Type != Simulation::TileType::None)
-					zPosition++;
-
-				while (m_World->GetLayers()[zPosition].Tiles[arrayPosY][arrayPosX].Type == Simulation::TileType::Water)
+				for (int i = m_World->GetLayers().size() - 1; i >= 0; i--)
 				{
-					xPosition = GetRandomValue(-5, 4);
-					yPosition = GetRandomValue(-5, 4);
+					float xPosition = GetRandomValue(0, 9);
+					float zPosition = GetRandomValue(0, 9);			
 
-					arrayPosX = xPosition + 5;
-					arrayPosY = yPosition + 5;
+					Simulation::WorldTile currentTile = m_World->GetLayers()[i].Tiles[zPosition][xPosition];
+
+					if (currentTile.Type == Simulation::TileType::None)
+						continue;
+
+					while (currentTile.Type == Simulation::TileType::Water || m_World->GetLayers()[i + 1].Tiles[zPosition][xPosition].Type != Simulation::TileType::None)
+					{
+						xPosition = GetRandomValue(0, 9);
+						zPosition = GetRandomValue(0, 9);
+						currentTile = m_World->GetLayers()[i].Tiles[zPosition][xPosition];
+
+						if (currentTile.Type == Simulation::TileType::None)
+							break;
+					}
+
+					if (currentTile.Type == Simulation::TileType::None)
+						continue;
+
+					uint32_t color = GetRandomValue(1, 3);
+					Core::Entity rabbit(m_Scene);
+					rabbit.AddComponent<Core::TagComponent>("Rabbit");
+					rabbit.AddComponent<Core::TransformComponent>(glm::vec3(xPosition - 5, 0.5f + i, zPosition - 5), 0.0f);
+					rabbit.AddComponent<Simulation::TileLocation>(xPosition, zPosition, i);
+					rabbit.AddComponent<Simulation::ColorComponent>((Simulation::AnimalsColors)color);
+
+					m_World->GetLayers()[i].Tiles[zPosition][xPosition].IsThereEntity = true;
 				}
-
-				uint32_t color = GetRandomValue(1, 3);
-				Core::Entity rabbit(m_Scene);
-				rabbit.AddComponent<Core::TagComponent>("Rabbit");
-				rabbit.AddComponent<Core::TransformComponent>(glm::vec3(xPosition, 0.5f + zPosition, yPosition), 0.0f);
-				rabbit.AddComponent<Simulation::TileLocation>(arrayPosX, arrayPosY, zPosition);
-				rabbit.AddComponent<Simulation::ColorComponent>((Simulation::AnimalsColors)color);
-				
 			}
 			m_RabbitsToSpawn = 0;
 		}
