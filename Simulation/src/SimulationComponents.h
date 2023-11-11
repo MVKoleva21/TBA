@@ -30,4 +30,15 @@ namespace Simulation {
 			RabbitColor = color;
 		}
 	};
+
+	struct MoveDirectionComponent
+	{
+		uint32_t MoveDir = 1;
+		bool CanChange = true;
+
+		MoveDirectionComponent(uint32_t dir)
+		{
+			MoveDir = dir;
+		}
+	};
 }

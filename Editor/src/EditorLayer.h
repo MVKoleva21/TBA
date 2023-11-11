@@ -5,6 +5,7 @@
 
 #include <imgui.h>
 #include <glm/glm.hpp>
+#include <thread>
 
 namespace Editor {
 	class EditorLayer : public Core::Layer
@@ -13,7 +14,7 @@ namespace Editor {
 		void OnAttach();
 		void OnUpdate();
 		void OnImGuiRender();
-	
+
 	private:
 		std::shared_ptr<Core::FrameBuffer> m_FrameBuffer;
 		glm::vec2 m_ViewPortSize = {GetScreenWidth(), GetScreenHeight()};
@@ -34,5 +35,7 @@ namespace Editor {
 		bool m_IsRunning = false;
 
 		std::shared_ptr<Simulation::Models> m_Models = nullptr;
+
+		uint32_t m_Wait = 100;
 	};
 }
