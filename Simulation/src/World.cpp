@@ -26,7 +26,7 @@ namespace Simulation {
 				newTile.XPosition = tile["PositionX"].as<float>();
 				newTile.YPositon = tile["PositionY"].as<float>();
 
-				newLayer.Tiles[tile["Id"].as<uint32_t>()] = newTile;
+				newLayer.Tiles[tile["ArrPosX"].as<uint32_t>()][tile["ArrPosY"].as<uint32_t>()] = newTile;
 			}
 
 			m_WorldLayers.push_back(newLayer);
@@ -45,12 +45,16 @@ namespace Simulation {
 			out << YAML::Key << "Layer" << YAML::Value << YAML::BeginSeq;
 			for (size_t j = 0; j < m_WorldLayers[i].Tiles.size(); j++)
 			{
-				out << YAML::BeginMap;
-				out << YAML::Key << "Id" << YAML::Value << j;
-				out << YAML::Key << "TileType" << YAML::Value << (uint32_t)m_WorldLayers[i].Tiles[j].Type;
-				out << YAML::Key << "PositionX" << YAML::Value << m_WorldLayers[i].Tiles[j].XPosition;
-				out << YAML::Key << "PositionY" << YAML::Value << m_WorldLayers[i].Tiles[j].YPositon;
-				out << YAML::EndMap;
+				for (size_t k = 0; k < m_WorldLayers[i].Tiles[j].size(); k++)
+				{
+					out << YAML::BeginMap;
+					out << YAML::Key << "ArrPosX" << YAML::Value << j;
+					out << YAML::Key << "ArrPosY" << YAML::Value << k;
+					out << YAML::Key << "TileType" << YAML::Value << (uint32_t)m_WorldLayers[i].Tiles[j][k].Type;
+					out << YAML::Key << "PositionX" << YAML::Value << m_WorldLayers[i].Tiles[j][k].XPosition;
+					out << YAML::Key << "PositionY" << YAML::Value << m_WorldLayers[i].Tiles[j][k].YPositon;
+					out << YAML::EndMap;
+				}	
 			}	
 			out << YAML::EndSeq;
 			out << YAML::EndMap;

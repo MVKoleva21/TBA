@@ -1,5 +1,7 @@
 #include "EditorLayer.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "SimulationComponents.h"
+#include "Models.h"
 
 namespace Editor {
 	void EditorLayer::OnAttach()
@@ -17,6 +19,8 @@ namespace Editor {
 		m_PerspectiveCamera->projection = CAMERA_PERSPECTIVE;
 
 		m_World.reset(new Simulation::World);
+
+		m_Models.reset(new Simulation::Models);
 	}
 
 	void EditorLayer::OnUpdate()
@@ -31,14 +35,15 @@ namespace Editor {
 		
 			BeginMode3D(*m_PerspectiveCamera);
 
-			uint8_t tileArrayIndex = 0;
+			uint8_t tileIndexX = 0;
+			uint8_t tileIndexY = 0;
 			for (int k = 0; k < m_World->GetLayers().size(); k++)
 			{
 				for (int i = -5; i < 5; i++)
 				{
 					for (int j = -5; j < 5; j++)
 					{
-						Simulation::WorldTile& tile = m_World->GetTiles(k)[tileArrayIndex];
+						Simulation::WorldTile& tile = m_World->GetTiles(k)[tileIndexX][tileIndexY];
 
 						if (tile.Type == Simulation::TileType::Sand)
 						{
@@ -56,18 +61,161 @@ namespace Editor {
 							DrawCubeWires({(float)i, (float)k, (float)j}, 1.0f, 1.0f, 1.0f, DARKGREEN);
 						}
 
-						tileArrayIndex++;
+						tileIndexX++;
 					}
+					tileIndexY++;
+					tileIndexX = 0;
 				}
 
-				tileArrayIndex = 0;
+				tileIndexX = 0;
+				tileIndexY = 0;
 			}	
 
 			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
 			{
 				Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
-				DrawCube({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, PURPLE);
-				DrawCubeWires({ transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z}, transformComponent.Scale.x, transformComponent.Scale.y, transformComponent.Scale.z, MAGENTA);
+				Simulation::ColorComponent& colorComponent = m_Scene->GetComponent<Simulation::ColorComponent>(i);
+
+				if(colorComponent.RabbitColor == Simulation::AnimalsColors::Gray)
+					DrawModelEx(*m_Models->GetGrayRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
+				else if(colorComponent.RabbitColor == Simulation::AnimalsColors::Black)
+					DrawModelEx(*m_Models->GetBlackRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
+				else if(colorComponent.RabbitColor == Simulation::AnimalsColors::White)
+					DrawModelEx(*m_Models->GetWhiteRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
+			}
+
+			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+			{
+				Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
+				Simulation::MoveDirectionComponent& moveDirComp = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(i);
+				
+				uint8_t changeDir = GetRandomValue(1, 6);
+				uint8_t priorityDir = GetRandomValue(1, 2);
+
+				if (m_Wait == 0)
+				{
+					m_Wait = 100;
+
+					if (changeDir == 1 && moveDirComp.CanChange)
+						moveDirComp.MoveDir = GetRandomValue(1, 8);
+
+					if (transformComponent.Position.x > -4.5 && transformComponent.Position.x < 4.0 && transformComponent.Position.z > -4.5 && transformComponent.Position.z < 4.0)
+					{
+						moveDirComp.CanChange = true;
+
+						if (moveDirComp.MoveDir == 1)
+						{
+							transformComponent.Position.x += 0.2;
+							transformComponent.Rotation = 90.0;
+						}
+						else if (moveDirComp.MoveDir == 2)
+						{
+							transformComponent.Position.x -= 0.2;
+							transformComponent.Rotation = -90.0f;
+						}
+						else if (moveDirComp.MoveDir == 3)
+						{
+							transformComponent.Position.z += 0.2;
+							transformComponent.Rotation = 0.0f;
+						}
+						else if (moveDirComp.MoveDir == 4)
+						{
+							transformComponent.Position.z -= 0.2;
+							transformComponent.Rotation = -180.0f;
+						}
+						else if (moveDirComp.MoveDir == 5)
+						{
+							transformComponent.Position.z += 0.2;
+							transformComponent.Position.x += 0.2;
+							transformComponent.Rotation = 45.0f;
+						}
+						else if (moveDirComp.MoveDir == 6)
+						{
+							transformComponent.Position.z -= 0.2;
+							transformComponent.Position.x += 0.2;
+							transformComponent.Rotation = 135.0f;
+						}
+						else if (moveDirComp.MoveDir == 7)
+						{
+							transformComponent.Position.z -= 0.2;
+							transformComponent.Position.x -= 0.2;
+							transformComponent.Rotation = -135.0f;
+						}
+						else if (moveDirComp.MoveDir == 8)
+						{
+							transformComponent.Position.z += 0.2;
+							transformComponent.Position.x -= 0.2;
+							transformComponent.Rotation = -45.0f;
+						}
+					}	
+					else
+					{
+						if (moveDirComp.MoveDir == 1)
+						{
+							moveDirComp.MoveDir = 2;
+							transformComponent.Position.x -= 0.2;
+							transformComponent.Rotation = -90.0;
+							moveDirComp.CanChange = false;
+						}
+						else if (moveDirComp.MoveDir == 2)
+						{
+							moveDirComp.MoveDir = 1;
+							transformComponent.Position.x += 0.2;
+							transformComponent.Rotation = 90.0f;
+							moveDirComp.CanChange = false;
+						}
+						else if (moveDirComp.MoveDir == 3)
+						{
+							moveDirComp.MoveDir = 4;
+							transformComponent.Position.z -= 0.2;
+							transformComponent.Rotation = -180.0f;
+							moveDirComp.CanChange = false;
+						}
+						else if (moveDirComp.MoveDir == 4)
+						{
+							moveDirComp.MoveDir = 4;
+							transformComponent.Position.z += 0.2;
+							transformComponent.Rotation = 0.0f;
+							moveDirComp.CanChange = false;
+						}
+						else if (moveDirComp.MoveDir == 5)
+						{
+							moveDirComp.MoveDir = 7;
+							transformComponent.Position.z -= 0.2;
+							transformComponent.Position.x -= 0.2;
+							transformComponent.Rotation = -135.0f;
+							moveDirComp.CanChange = false;
+						}
+						else if (moveDirComp.MoveDir == 6)
+						{
+							moveDirComp.MoveDir = 8;
+							transformComponent.Position.z += 0.2;
+							transformComponent.Position.x -= 0.2;
+							transformComponent.Rotation = -45.0f;
+							moveDirComp.CanChange = false;
+						}
+						else if (moveDirComp.MoveDir == 7)
+						{
+							moveDirComp.MoveDir = 5;
+							transformComponent.Position.z += 0.2;
+							transformComponent.Position.x += 0.2;
+							transformComponent.Rotation = 45.0f;
+							moveDirComp.CanChange = false;
+						}
+						else if (moveDirComp.MoveDir == 8)
+						{
+							moveDirComp.MoveDir = 6;
+							transformComponent.Position.z -= 0.2;
+							transformComponent.Position.x += 0.2;
+							transformComponent.Rotation = 135.0f;
+							moveDirComp.CanChange = false;
+						}
+					}
+				}
+				else
+				{
+					m_Wait--;
+				}
 			}
 
 			EndMode3D();
@@ -76,14 +224,42 @@ namespace Editor {
 		{
 			SetMouseOffset(m_SceneEntitiesSelectorWidth * -1, ImGui::GetFrameHeight() * -2);
 
+			if (m_SelectedLayer > 0)
+			{
+				uint32_t opacity = 20;
+				for (auto& layer : m_World->GetLayers())
+				{
+					for (auto& i : layer.Tiles)
+					{
+						for (auto& j : i)
+						{
+							if (j.Type == Simulation::TileType::Sand)
+								DrawRectangle(j.XPosition, j.YPositon, 60, 60, Color{ 253, 249, 0, (unsigned char)opacity });
+							else if (j.Type == Simulation::TileType::Water)
+								DrawRectangle(j.XPosition, j.YPositon, 60, 60, Color{ 0, 121, 241, (unsigned char)opacity });
+							else if (j.Type == Simulation::TileType::Grass)
+								DrawRectangle(j.XPosition, j.YPositon, 60, 60, Color{ 0, 228, 48, (unsigned char)opacity });
+						}	
+					}
+
+					if (opacity < 255)
+						opacity += 50;
+					else
+						opacity = 200;
+				}
+			}	
+
 			for (auto& i : m_World->GetTiles(m_SelectedLayer))
 			{
-				if (i.Type == Simulation::TileType::Sand)
-					DrawRectangle(i.XPosition, i.YPositon, 60, 60, YELLOW);
-				else if (i.Type == Simulation::TileType::Water)
-					DrawRectangle(i.XPosition, i.YPositon, 60, 60, BLUE);
-				else if (i.Type == Simulation::TileType::Grass)
-					DrawRectangle(i.XPosition, i.YPositon, 60, 60, GREEN);
+				for (auto& j : i)
+				{
+					if (j.Type == Simulation::TileType::Sand)
+						DrawRectangle(j.XPosition, j.YPositon, 60, 60, YELLOW);
+					else if (j.Type == Simulation::TileType::Water)
+						DrawRectangle(j.XPosition, j.YPositon, 60, 60, BLUE);
+					else if (j.Type == Simulation::TileType::Grass)
+						DrawRectangle(j.XPosition, j.YPositon, 60, 60, GREEN);	
+				}	
 			}
 
 			for (int i = 0; i < 10; i++)
@@ -101,7 +277,7 @@ namespace Editor {
 
 						if (IsMouseButtonDown(0))
 						{
-							m_World->PushTile(m_SelectedLayer, i * 10 + j, Simulation::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
+							m_World->PushTile(m_SelectedLayer, i, j, Simulation::WorldTile{((m_ViewPortSize.x / 2) - 300) + 60 * i, ((m_ViewPortSize.y / 2) - 300) + 60 * j, m_SelectedTileType});
 						}
 					}
 					else
@@ -170,33 +346,43 @@ namespace Editor {
 
 		rlImGuiImageRenderTexture(m_FrameBuffer->GetTexture().get());
 
-		if(m_IsRunning)
-		{ 
-			for (int i = 0; i < m_MouseToSpawn; i++)
+		if (m_IsRunning)
+		{
+			for (int j = 0; j < m_RabbitsToSpawn; j++)
 			{
-				float xPosition = GetRandomValue(-5, 4);
-				float yPosition = GetRandomValue(-5, 4);
-				float zPosition = 0;
-
-				float arrayPosition = (xPosition + 5) * 10 + (yPosition + 5);
-
-				while (m_World->GetLayers()[zPosition != m_World->GetLayers().size() - 1? zPosition + 1: zPosition].Tiles[arrayPosition].Type != Simulation::TileType::None)
+				for (int i = m_World->GetLayers().size() - 1; i >= 0; i--)
 				{
-					zPosition++;
-				}
+					float xPosition = GetRandomValue(1, 8);
+					float zPosition = GetRandomValue(1, 8);	
 
-				while (m_World->GetLayers()[zPosition].Tiles[arrayPosition].Type == Simulation::TileType::Water)
-				{
-					xPosition = GetRandomValue(-5, 4);
-					yPosition = GetRandomValue(-5, 4);
-					arrayPosition = (xPosition + 5) * 10 + (yPosition + 5);
-				}
+					Simulation::WorldTile currentTile = m_World->GetLayers()[i].Tiles[zPosition][xPosition];
 
-				Core::Entity mouse(m_Scene);
-				mouse.AddComponent<Core::TagComponent>("Mouse");
-				mouse.AddComponent<Core::TransformComponent>(glm::vec3(xPosition, 0.8f + zPosition, yPosition), glm::vec3(0.5, 0.5, 0.5));
+					if (currentTile.Type == Simulation::TileType::None)
+						continue;
+
+					while (currentTile.Type == Simulation::TileType::Water || m_World->GetLayers()[i + 1].Tiles[zPosition][xPosition].Type != Simulation::TileType::None)
+					{
+						xPosition = GetRandomValue(0, 9);
+						zPosition = GetRandomValue(0, 9);
+						currentTile = m_World->GetLayers()[i].Tiles[zPosition][xPosition];
+
+						if (currentTile.Type == Simulation::TileType::None)
+							break;
+					}
+
+					if (currentTile.Type == Simulation::TileType::None)
+						continue;
+
+					uint8_t color = GetRandomValue(1, 3);
+					Core::Entity rabbit(m_Scene);
+					rabbit.AddComponent<Core::TagComponent>("Rabbit");
+					rabbit.AddComponent<Core::TransformComponent>(glm::vec3(xPosition - 5, 0.5f + i, zPosition - 5), 0.0f);
+					rabbit.AddComponent<Simulation::TileLocation>(xPosition, zPosition, i);
+					rabbit.AddComponent<Simulation::ColorComponent>((Simulation::AnimalsColors)color);
+					rabbit.AddComponent<Simulation::MoveDirectionComponent>(1);
+				}
 			}
-			m_MouseToSpawn = 0;
+			m_RabbitsToSpawn = 0;
 		}
 
 		ImGui::End();
@@ -232,12 +418,16 @@ namespace Editor {
 
 				Core::TransformComponent& transform = m_Scene->GetComponent<Core::TransformComponent>(m_Scene->GetSelectedEntity());
 				ImGui::DragFloat3("Position", glm::value_ptr(transform.Position), 0.2f, -5.0f, 4.0f);
-				ImGui::DragFloat3("Scale", glm::value_ptr(transform.Scale), 0.2f, -5.0f, 4.0f);			
+
+				Simulation::MoveDirectionComponent& dir = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(m_Scene->GetSelectedEntity());
+				ImGui::Text(((std::string)"Move Dir: " + std::to_string(dir.MoveDir)).c_str());
 			}
 		}
 		else
 		{
-			if (ImGui::Selectable("Sand", m_SelectedTileType == Simulation::TileType::Sand))
+			if (ImGui::Selectable("None", m_SelectedTileType == Simulation::TileType::None))
+				m_SelectedTileType = Simulation::TileType::None;
+			else if (ImGui::Selectable("Sand", m_SelectedTileType == Simulation::TileType::Sand))
 				m_SelectedTileType = Simulation::TileType::Sand;
 			else if (ImGui::Selectable("Grass", m_SelectedTileType == Simulation::TileType::Grass))
 				m_SelectedTileType = Simulation::TileType::Grass;
@@ -260,6 +450,11 @@ namespace Editor {
 				if (ImGui::Selectable(((std::string)"Layer" + std::to_string(index)).c_str(), m_SelectedLayer == index))
 					m_SelectedLayer = index;
 
+				if (ImGui::Button("Remove Layer"))
+				{
+					m_World->PopLayer(index);
+				}
+
 				index++;
 				ImGui::PopID();
 			}
@@ -277,7 +472,7 @@ namespace Editor {
 			ImGui::Begin("Animals");
 
 			ImGui::Spacing();
-			ImGui::DragInt("Mouses", &m_MouseToSpawn, 1.0, 0, 100);
+			ImGui::DragInt("Rabbits", &m_RabbitsToSpawn, 1.0, 0, 100);
 			ImGui::Spacing();
 
 			ImGui::End();	
