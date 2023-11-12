@@ -7,6 +7,11 @@ namespace Simulation {
 		None = 0, Black, Gray, White
 	};
 
+	enum class Animals
+	{
+		None = 0, Rabbit, Fox
+	};
+
 	struct TileLocation
 	{
 		uint32_t ArrayPosX = 0;
@@ -29,6 +34,21 @@ namespace Simulation {
 		{
 			RabbitColor = color;
 		}
+
+		std::string ToString()
+		{
+			switch (RabbitColor)
+			{
+			case AnimalsColors::Black:
+				return "Black";
+			case AnimalsColors::Gray:
+				return "Gray";
+			case AnimalsColors::White:
+				return "White";
+			default:
+				break;
+			}
+		}
 	};
 
 	struct MoveDirectionComponent
@@ -42,10 +62,17 @@ namespace Simulation {
 		}
 	};
 
-	struct HungerComponent
+	struct AnimalComponent
 	{
-		uint32_t Hunger = 3000;
+		uint32_t Thirst = 0;
+		uint32_t Hunger = 0;
+		Animals Type = Animals::None;
 
-		HungerComponent() {}
+		AnimalComponent(uint32_t thirst, uint32_t hunger, Animals type)
+		{
+			Thirst = thirst;
+			Hunger = hunger;
+			Type = type;
+		}
 	};
 }

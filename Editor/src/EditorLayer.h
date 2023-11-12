@@ -17,6 +17,9 @@ namespace Editor {
 
 	private:
 		void Processes();
+		void UpdateEntityPosition(entt::entity entity);
+		void UpdateEntityPositionOnHunger(entt::entity entity);
+		void UpdateEntityPositionOnThirst(entt::entity entity);
 
 	private:
 		std::shared_ptr<Core::FrameBuffer> m_FrameBuffer;

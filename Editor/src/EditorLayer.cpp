@@ -88,95 +88,7 @@ namespace Editor {
 
 			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
 			{
-				Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
-				Simulation::MoveDirectionComponent& moveDirComp = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(i);
-				Simulation::HungerComponent& hunger = m_Scene->GetComponent<Simulation::HungerComponent>(i);
-				
-				uint8_t changeDir = GetRandomValue(1, 6);
-				uint8_t priorityDir = GetRandomValue(1, 2);
-
-				if (true)
-				{
-					if (m_Wait == 0)
-					{
-						m_Wait = 100;
-
-						if (changeDir == 1 && moveDirComp.CanChange)
-							moveDirComp.MoveDir = GetRandomValue(1, 8);
-
-						if (transformComponent.Position.x > -4.0 && transformComponent.Position.x < 4.0 && transformComponent.Position.z > -4.0 && transformComponent.Position.z < 4.0)
-						{
-							moveDirComp.CanChange = true;
-
-							if (moveDirComp.MoveDir == 1)
-							{
-								transformComponent.Position.x += 0.2;
-								transformComponent.Rotation = 90.0;
-							}
-							else if (moveDirComp.MoveDir == 2)
-							{
-								transformComponent.Position.x -= 0.2;
-								transformComponent.Rotation = -90.0f;
-							}
-							else if (moveDirComp.MoveDir == 3)
-							{
-								transformComponent.Position.z += 0.2;
-								transformComponent.Rotation = 0.0f;
-							}
-							else if (moveDirComp.MoveDir == 4)
-							{
-								transformComponent.Position.z -= 0.2;
-								transformComponent.Rotation = -180.0f;
-							}
-							else if (moveDirComp.MoveDir == 5)
-							{
-								transformComponent.Position.z += 0.2;
-								transformComponent.Position.x += 0.2;
-								transformComponent.Rotation = 45.0f;
-							}
-							else if (moveDirComp.MoveDir == 6)
-							{
-								transformComponent.Position.z -= 0.2;
-								transformComponent.Position.x += 0.2;
-								transformComponent.Rotation = 135.0f;
-							}
-							else if (moveDirComp.MoveDir == 7)
-							{
-								transformComponent.Position.z -= 0.2;
-								transformComponent.Position.x -= 0.2;
-								transformComponent.Rotation = -135.0f;
-							}
-							else if (moveDirComp.MoveDir == 8)
-							{
-								transformComponent.Position.z += 0.2;
-								transformComponent.Position.x -= 0.2;
-								transformComponent.Rotation = -45.0f;
-							}
-						}	
-						else
-						{
-							uint32_t oldDir = moveDirComp.MoveDir;
-							while (moveDirComp.MoveDir == oldDir)
-								moveDirComp.MoveDir = GetRandomValue(1, 8);
-
-							moveDirComp.CanChange = false;
-							
-							if (transformComponent.Position.x < 0)
-								transformComponent.Position.x += 0.2f;
-							else 
-								transformComponent.Position.x -= 0.2f;
-
-							if (transformComponent.Position.z < 0)
-								transformComponent.Position.z += 0.2f;
-							else
-								transformComponent.Position.z -= 0.2f;
-						}
-					}
-					else
-					{
-						m_Wait--;
-					}
-				}
+				UpdateEntityPosition(i);
 			}
 
 			EndMode3D();
@@ -347,8 +259,7 @@ namespace Editor {
 					rabbit.AddComponent<Core::TransformComponent>(glm::vec3(xPosition - 5, 0.5f + i, zPosition - 5), 0.0f);
 					rabbit.AddComponent<Simulation::TileLocation>(xPosition, zPosition, i);
 					rabbit.AddComponent<Simulation::MoveDirectionComponent>(1);
-					rabbit.AddComponent<Simulation::HungerComponent>();
-
+					rabbit.AddComponent<Simulation::AnimalComponent>(6000, 12000, Simulation::Animals::Rabbit);
 					rabbit.AddComponent<Simulation::ColorComponent>((Simulation::AnimalsColors)color);
 				}
 			}
@@ -392,8 +303,13 @@ namespace Editor {
 				Simulation::MoveDirectionComponent& dir = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(m_Scene->GetSelectedEntity());
 				ImGui::Text(((std::string)"Move Dir: " + std::to_string(dir.MoveDir)).c_str());
 
-				Simulation::HungerComponent& hunger = m_Scene->GetComponent<Simulation::HungerComponent>(m_Scene->GetSelectedEntity());
-				ImGui::Text(((std::string)"Hunger: " + std::to_string(hunger.Hunger)).c_str());
+				Simulation::AnimalComponent& animal = m_Scene->GetComponent<Simulation::AnimalComponent>(m_Scene->GetSelectedEntity());
+				ImGui::Text(((std::string)"Hunger: " + std::to_string(animal.Hunger)).c_str());
+
+				ImGui::Text(((std::string)"Thirst: " + std::to_string(animal.Thirst)).c_str());
+
+				Simulation::ColorComponent& color = m_Scene->GetComponent<Simulation::ColorComponent>(m_Scene->GetSelectedEntity());
+				ImGui::Text(((std::string)"Color: " + color.ToString()).c_str());
 			}
 		}
 		else
@@ -452,16 +368,212 @@ namespace Editor {
 		}
 	}
 
+	void EditorLayer::UpdateEntityPosition(entt::entity entity)
+	{
+		Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(entity);
+		Simulation::MoveDirectionComponent& moveDirComp = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(entity);
+		Simulation::AnimalComponent& animal = m_Scene->GetComponent<Simulation::AnimalComponent>(entity);
+				
+		uint8_t changeDir = GetRandomValue(1, 6);
+		uint8_t priorityDir = GetRandomValue(1, 2);
+
+		if (m_Wait == 0)
+		{
+			m_Wait = 100;
+
+			if (animal.Hunger > 6000)
+			{
+				if (changeDir == 1 && moveDirComp.CanChange)
+					moveDirComp.MoveDir = GetRandomValue(1, 8);
+			}
+			else
+			{
+				UpdateEntityPositionOnHunger(entity);
+			}
+
+			if (animal.Thirst > 3000)
+			{
+				if (changeDir == 1 && moveDirComp.CanChange)
+					moveDirComp.MoveDir = GetRandomValue(1, 8);
+			}
+			else
+			{
+				UpdateEntityPositionOnThirst(entity);
+			}
+
+			if (transformComponent.Position.x > -4.0 && transformComponent.Position.x < 4.0 && transformComponent.Position.z > -4.0 && transformComponent.Position.z < 4.0)
+			{
+				moveDirComp.CanChange = true;
+
+				if (moveDirComp.MoveDir == 1)
+				{
+					transformComponent.Position.x += 0.2;
+					transformComponent.Rotation = 90.0;
+				}
+				else if (moveDirComp.MoveDir == 2)
+				{
+					transformComponent.Position.x -= 0.2;
+					transformComponent.Rotation = -90.0f;
+				}
+				else if (moveDirComp.MoveDir == 3)
+				{
+					transformComponent.Position.z += 0.2;
+					transformComponent.Rotation = 0.0f;
+				}
+				else if (moveDirComp.MoveDir == 4)
+				{
+					transformComponent.Position.z -= 0.2;
+					transformComponent.Rotation = -180.0f;
+				}
+				else if (moveDirComp.MoveDir == 5)
+				{
+					transformComponent.Position.z += 0.2;
+					transformComponent.Position.x += 0.2;
+					transformComponent.Rotation = 45.0f;
+				}
+				else if (moveDirComp.MoveDir == 6)
+				{
+					transformComponent.Position.z -= 0.2;
+					transformComponent.Position.x += 0.2;
+					transformComponent.Rotation = 135.0f;
+				}
+				else if (moveDirComp.MoveDir == 7)
+				{
+					transformComponent.Position.z -= 0.2;
+					transformComponent.Position.x -= 0.2;
+					transformComponent.Rotation = -135.0f;
+				}
+				else if (moveDirComp.MoveDir == 8)
+				{
+					transformComponent.Position.z += 0.2;
+					transformComponent.Position.x -= 0.2;
+					transformComponent.Rotation = -45.0f;
+				}
+			}	
+			else
+			{
+				uint32_t oldDir = moveDirComp.MoveDir;
+				while (moveDirComp.MoveDir == oldDir)
+					moveDirComp.MoveDir = GetRandomValue(1, 8);
+
+				moveDirComp.CanChange = false;
+				
+				if (transformComponent.Position.x < 0)
+					transformComponent.Position.x += 0.2f;
+				else 
+					transformComponent.Position.x -= 0.2f;
+
+				if (transformComponent.Position.z < 0)
+					transformComponent.Position.z += 0.2f;
+				else
+					transformComponent.Position.z -= 0.2f;
+			}
+		}
+		else
+		{
+			m_Wait--;
+		}
+	}
+
+	void EditorLayer::UpdateEntityPositionOnHunger(entt::entity entity)
+	{
+		Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(entity);
+		Simulation::AnimalComponent& animal = m_Scene->GetComponent<Simulation::AnimalComponent>(entity);
+		Simulation::MoveDirectionComponent& moveDirComp = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(entity);
+
+		uint32_t entityTileX = transformComponent.Position.z + 5;
+		uint32_t entityTileZ = transformComponent.Position.x + 5;
+
+		int32_t closestGrassTileZ = 0;
+		int32_t closestGrassTileX = 0;
+
+		if (animal.Type == Simulation::Animals::Rabbit)
+		{
+			for (uint32_t i = 0; i < m_World->GetLayers().size(); i++)
+			{
+				for (uint32_t j = 0; j < m_World->GetLayers()[i].Tiles.size(); j++)
+				{
+					for (uint32_t k = 0; k < m_World->GetLayers()[i].Tiles[j].size(); k++)
+					{
+						if (m_World->GetLayers()[i].Tiles[j][k].Type == Simulation::TileType::Grass)
+						{
+							if (closestGrassTileX < transformComponent.Position.x + 5)
+								closestGrassTileX = transformComponent.Position.x + 5;
+
+							if (closestGrassTileZ < transformComponent.Position.z + 5)
+								closestGrassTileZ = transformComponent.Position.z + 5;
+						}
+					}
+				}
+			}
+
+			int32_t moveX = (closestGrassTileX - 5 > transformComponent.Position.x) ? 0.2 : -0.2;
+			int32_t moveZ = (closestGrassTileZ - 5 > transformComponent.Position.z) ? 0.2 : -0.2;
+
+			transformComponent.Position.x += moveX;
+			transformComponent.Position.z += moveZ;
+		}	
+	}
+
+	void EditorLayer::UpdateEntityPositionOnThirst(entt::entity entity)
+	{
+		Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(entity);
+		Simulation::AnimalComponent& animal = m_Scene->GetComponent<Simulation::AnimalComponent>(entity);
+		Simulation::MoveDirectionComponent& moveDirComp = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(entity);
+		uint32_t entityTileX = transformComponent.Position.z + 5;
+		uint32_t entityTileZ = transformComponent.Position.x + 5;
+
+		int32_t closestWaterTileZ = 0;
+		int32_t closestWaterTileX = 0;
+
+		if (animal.Type == Simulation::Animals::Rabbit)
+		{
+			for (uint32_t i = 0; i < m_World->GetLayers().size(); i++)
+			{
+				for (uint32_t j = 0; j < m_World->GetLayers()[i].Tiles.size(); j++)
+				{
+					for (uint32_t k = 0; k < m_World->GetLayers()[i].Tiles[j].size(); k++)
+					{
+						if (m_World->GetLayers()[i].Tiles[j][k].Type == Simulation::TileType::Grass)
+						{
+							if (closestWaterTileZ < transformComponent.Position.x + 5)
+								closestWaterTileZ = transformComponent.Position.x + 5;
+
+							if (closestWaterTileX < transformComponent.Position.z + 5)
+								closestWaterTileX = transformComponent.Position.z + 5;
+						}
+					}
+				}
+			}
+
+			int32_t moveX = (closestWaterTileX - 5 > transformComponent.Position.x) ? 0.2 : -0.2;
+			int32_t moveZ = (closestWaterTileZ - 5 > transformComponent.Position.z) ? 0.2 : -0.2;
+
+			transformComponent.Position.x += moveX;
+			transformComponent.Position.z += moveZ;
+		}
+	}
+
 	void EditorLayer::Processes()
 	{
-		for (auto& i : m_Scene->GetEntities<Simulation::HungerComponent>())
+		for (auto& i : m_Scene->GetEntities<Simulation::AnimalComponent>())
 		{
 			Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
-			Simulation::HungerComponent& hunger = m_Scene->GetComponent<Simulation::HungerComponent>(i);
+			Simulation::AnimalComponent& animal = m_Scene->GetComponent<Simulation::AnimalComponent>(i);
 
-			if (hunger.Hunger > 0)
+			if (animal.Hunger > 0)
 			{
-				hunger.Hunger--;
+				animal.Hunger--;
+			}
+			else
+			{
+				m_Scene->SetSelectedEntity(entt::null);
+				m_Scene->Destroy(i);
+			}
+
+			if (animal.Thirst > 0)
+			{
+				animal.Thirst--;
 			}
 			else
 			{
@@ -469,12 +581,21 @@ namespace Editor {
 				m_Scene->Destroy(i);
 			}
 		
-			if (hunger.Hunger < 1500)
+			if (animal.Hunger < 6000)
 			{
-				if (transformComponent.Position.z + 5 >= 0 && transformComponent.Position.x + 5 >= 0 && transformComponent.Position.z + 5 <= 9 && transformComponent.Position.x + 5 <= 9 && (transformComponent.Position.z + 5 * 10) + transformComponent.Position.x + 5 > 10)
+				if ((transformComponent.Position.z + 5 * 10) + transformComponent.Position.x + 5 > 10)
 				{
 					if (m_World->GetLayers()[transformComponent.Position.y].Tiles[transformComponent.Position.z + 5][transformComponent.Position.x + 5].Type == Simulation::TileType::Grass)
-						hunger.Hunger = 3000;
+						animal.Hunger = 12000;
+				}
+			}
+
+			if (animal.Thirst < 3000)
+			{
+				if ((transformComponent.Position.z + 5 * 10) + transformComponent.Position.x + 5 > 10)
+				{
+					if (m_World->GetLayers()[transformComponent.Position.y].Tiles[transformComponent.Position.z + 5][transformComponent.Position.x + 5].Type == Simulation::TileType::Water)
+						animal.Thirst = 6000;
 				}
 			}
 		}	
