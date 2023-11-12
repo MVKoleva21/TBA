@@ -225,8 +225,8 @@ namespace Editor {
 			{
 				for (int i = m_World->GetLayers().size() - 1; i >= 0; i--)
 				{
-					float xPosition = GetRandomValue(1, 8);
-					float zPosition = GetRandomValue(1, 8);	
+					float xPosition = GetRandomValue(0, 9);
+					float zPosition = GetRandomValue(0, 9);	
 
 					Simulation::WorldTile currentTile = m_World->GetLayers()[i].Tiles[zPosition][xPosition];
 
@@ -235,8 +235,8 @@ namespace Editor {
 
 					while (currentTile.Type == Simulation::TileType::Water || m_World->GetLayers()[i + 1].Tiles[zPosition][xPosition].Type != Simulation::TileType::None)
 					{
-						xPosition = GetRandomValue(1, 8);
-						zPosition = GetRandomValue(1, 8);
+						xPosition = GetRandomValue(0, 9);
+						zPosition = GetRandomValue(0, 9);
 						currentTile = m_World->GetLayers()[i].Tiles[zPosition][xPosition];
 
 						if (currentTile.Type == Simulation::TileType::None)
@@ -401,7 +401,17 @@ namespace Editor {
 				UpdateEntityPositionOnThirst(entity);
 			}
 
-			if (transformComponent.Position.x > -4.0 && transformComponent.Position.x < 4.0 && transformComponent.Position.z > -4.0 && transformComponent.Position.z < 4.0)
+			if (animal.ReplroductiveUrges < 500)
+			{
+				if (changeDir == 1 && moveDirComp.CanChange)
+					moveDirComp.MoveDir = GetRandomValue(1, 8);	
+			}
+			else
+			{
+				UpdateEntityPositionOnReproduction(entity);
+			}
+
+			if (transformComponent.Position.x > -5.0 && transformComponent.Position.x < 4.0 && transformComponent.Position.z > -5.0 && transformComponent.Position.z < 4.0)
 			{
 				moveDirComp.CanChange = true;
 
@@ -479,7 +489,6 @@ namespace Editor {
 	{
 		Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(entity);
 		Simulation::AnimalComponent& animal = m_Scene->GetComponent<Simulation::AnimalComponent>(entity);
-		Simulation::MoveDirectionComponent& moveDirComp = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(entity);
 
 		uint32_t entityTileX = transformComponent.Position.z + 5;
 		uint32_t entityTileZ = transformComponent.Position.x + 5;
@@ -554,6 +563,93 @@ namespace Editor {
 		}
 	}
 
+	void EditorLayer::UpdateEntityPositionOnReproduction(entt::entity entity)
+	{
+		Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(entity);
+		Simulation::AnimalComponent& animal = m_Scene->GetComponent<Simulation::AnimalComponent>(entity);
+		Core::TransformComponent transformComponentSecondEntity = m_Scene->GetComponent<Core::TransformComponent>(entity);
+		Simulation::ColorComponent colorComponetOne = m_Scene->GetComponent<Simulation::ColorComponent>(entity);
+		Simulation::ColorComponent colorComponetTwo = m_Scene->GetComponent<Simulation::ColorComponent>(entity);
+		
+
+		if (animal.Type == Simulation::Animals::Rabbit)
+		{
+			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
+			{
+				Simulation::AnimalComponent& animal = m_Scene->GetComponent<Simulation::AnimalComponent>(i);
+
+				if (animal.ReplroductiveUrges > 500)
+				{
+					transformComponentSecondEntity = m_Scene->GetComponent<Core::TransformComponent>(i);
+					colorComponetTwo = m_Scene->GetComponent<Simulation::ColorComponent>(i);
+					animal.ReplroductiveUrges = 0;
+					break;
+				}
+			}
+
+			int32_t moveX = (transformComponentSecondEntity.Position.x > transformComponent.Position.x) ? 0.2 : -0.2;
+			int32_t moveZ = (transformComponentSecondEntity.Position.z > transformComponent.Position.z) ? 0.2 : -0.2;
+
+			transformComponent.Position.x += moveX;
+			transformComponent.Position.z += moveZ;
+
+			if (transformComponent.Position.x == transformComponentSecondEntity.Position.x)
+			{
+				Core::Entity rabbit(m_Scene);
+				rabbit.AddComponent<Core::TagComponent>("Rabbit");
+				rabbit.AddComponent<Core::TransformComponent>(glm::vec3(transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z), 0.0f);
+				rabbit.AddComponent<Simulation::TileLocation>(transformComponent.Position.z + 5, transformComponent.Position.x + 5, transformComponent.Position.y);
+				rabbit.AddComponent<Simulation::AnimalComponent>(6000, 12000, Simulation::Animals::Rabbit);
+				rabbit.AddComponent<Simulation::MoveDirectionComponent>(1);
+
+				uint32_t procentage = GetRandomValue(1, 100);
+				
+				if (colorComponetTwo.RabbitColor == Simulation::AnimalsColors::White && colorComponetOne.RabbitColor == Simulation::AnimalsColors::Gray)
+				{
+					if(procentage < 50)
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::Gray);			
+					else
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::White);			
+				}
+				else if (colorComponetTwo.RabbitColor == Simulation::AnimalsColors::White && colorComponetOne.RabbitColor == Simulation::AnimalsColors::White)
+				{
+					rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::White);			
+				}
+				else if (colorComponetTwo.RabbitColor == Simulation::AnimalsColors::Black && colorComponetOne.RabbitColor == Simulation::AnimalsColors::Gray)
+				{
+					if(procentage < 50)
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::Gray);			
+					else
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::Black);			
+				}
+				else if (colorComponetTwo.RabbitColor == Simulation::AnimalsColors::Black && colorComponetOne.RabbitColor == Simulation::AnimalsColors::White)
+				{
+					if(procentage < 70)
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::Gray);			
+					else
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::White);			
+				}
+				else if (colorComponetTwo.RabbitColor == Simulation::AnimalsColors::Black && colorComponetOne.RabbitColor == Simulation::AnimalsColors::Black)
+				{
+					rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::Black);			
+				}
+				else if (colorComponetTwo.RabbitColor == Simulation::AnimalsColors::Gray && colorComponetOne.RabbitColor == Simulation::AnimalsColors::Gray)
+				{
+					if (procentage < 50)
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::Gray);
+					else if (procentage < 75)
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::Black);
+					else
+						rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::White);
+				}
+				else
+				{
+					rabbit.AddComponent<Simulation::ColorComponent>(Simulation::AnimalsColors::Black);
+				}
+			}
+		}
+	}
+
 	void EditorLayer::Processes()
 	{
 		for (auto& i : m_Scene->GetEntities<Simulation::AnimalComponent>())
@@ -579,6 +675,16 @@ namespace Editor {
 			{
 				m_Scene->SetSelectedEntity(entt::null);
 				m_Scene->Destroy(i);
+			}
+
+			if (animal.ReplroductiveUrges > 1000)
+			{
+				m_Scene->SetSelectedEntity(entt::null);
+				m_Scene->Destroy(i);
+			}
+			else
+			{
+				animal.ReplroductiveUrges++;
 			}
 		
 			if (animal.Hunger < 6000)

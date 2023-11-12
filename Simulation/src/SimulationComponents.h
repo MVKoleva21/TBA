@@ -67,6 +67,7 @@ namespace Simulation {
 		uint32_t Thirst = 0;
 		uint32_t Hunger = 0;
 		Animals Type = Animals::None;
+		uint32_t ReplroductiveUrges = 0;
 
 		AnimalComponent(uint32_t thirst, uint32_t hunger, Animals type)
 		{
