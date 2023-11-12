@@ -37,6 +37,11 @@ namespace Core {
 			m_SelectedEntity = entity;
 		}
 
+		void Destroy(entt::entity entity)
+		{
+			m_Registry.destroy(entity);
+		}
+
 		std::string GetName() const { return m_SceneName; }
 		void SetName(std::string name) { m_SceneName = name; }
 

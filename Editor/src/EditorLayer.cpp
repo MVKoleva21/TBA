@@ -84,137 +84,98 @@ namespace Editor {
 					DrawModelEx(*m_Models->GetWhiteRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
 			}
 
+			Processes();
+
 			for (auto& i : m_Scene->GetEntities<Core::TransformComponent>())
 			{
 				Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
 				Simulation::MoveDirectionComponent& moveDirComp = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(i);
+				Simulation::HungerComponent& hunger = m_Scene->GetComponent<Simulation::HungerComponent>(i);
 				
 				uint8_t changeDir = GetRandomValue(1, 6);
 				uint8_t priorityDir = GetRandomValue(1, 2);
 
-				if (m_Wait == 0)
+				if (true)
 				{
-					m_Wait = 100;
-
-					if (changeDir == 1 && moveDirComp.CanChange)
-						moveDirComp.MoveDir = GetRandomValue(1, 8);
-
-					if (transformComponent.Position.x > -4.5 && transformComponent.Position.x < 4.0 && transformComponent.Position.z > -4.5 && transformComponent.Position.z < 4.0)
+					if (m_Wait == 0)
 					{
-						moveDirComp.CanChange = true;
+						m_Wait = 100;
 
-						if (moveDirComp.MoveDir == 1)
+						if (changeDir == 1 && moveDirComp.CanChange)
+							moveDirComp.MoveDir = GetRandomValue(1, 8);
+
+						if (transformComponent.Position.x > -4.0 && transformComponent.Position.x < 4.0 && transformComponent.Position.z > -4.0 && transformComponent.Position.z < 4.0)
 						{
-							transformComponent.Position.x += 0.2;
-							transformComponent.Rotation = 90.0;
-						}
-						else if (moveDirComp.MoveDir == 2)
+							moveDirComp.CanChange = true;
+
+							if (moveDirComp.MoveDir == 1)
+							{
+								transformComponent.Position.x += 0.2;
+								transformComponent.Rotation = 90.0;
+							}
+							else if (moveDirComp.MoveDir == 2)
+							{
+								transformComponent.Position.x -= 0.2;
+								transformComponent.Rotation = -90.0f;
+							}
+							else if (moveDirComp.MoveDir == 3)
+							{
+								transformComponent.Position.z += 0.2;
+								transformComponent.Rotation = 0.0f;
+							}
+							else if (moveDirComp.MoveDir == 4)
+							{
+								transformComponent.Position.z -= 0.2;
+								transformComponent.Rotation = -180.0f;
+							}
+							else if (moveDirComp.MoveDir == 5)
+							{
+								transformComponent.Position.z += 0.2;
+								transformComponent.Position.x += 0.2;
+								transformComponent.Rotation = 45.0f;
+							}
+							else if (moveDirComp.MoveDir == 6)
+							{
+								transformComponent.Position.z -= 0.2;
+								transformComponent.Position.x += 0.2;
+								transformComponent.Rotation = 135.0f;
+							}
+							else if (moveDirComp.MoveDir == 7)
+							{
+								transformComponent.Position.z -= 0.2;
+								transformComponent.Position.x -= 0.2;
+								transformComponent.Rotation = -135.0f;
+							}
+							else if (moveDirComp.MoveDir == 8)
+							{
+								transformComponent.Position.z += 0.2;
+								transformComponent.Position.x -= 0.2;
+								transformComponent.Rotation = -45.0f;
+							}
+						}	
+						else
 						{
-							transformComponent.Position.x -= 0.2;
-							transformComponent.Rotation = -90.0f;
-						}
-						else if (moveDirComp.MoveDir == 3)
-						{
-							transformComponent.Position.z += 0.2;
-							transformComponent.Rotation = 0.0f;
-						}
-						else if (moveDirComp.MoveDir == 4)
-						{
-							transformComponent.Position.z -= 0.2;
-							transformComponent.Rotation = -180.0f;
-						}
-						else if (moveDirComp.MoveDir == 5)
-						{
-							transformComponent.Position.z += 0.2;
-							transformComponent.Position.x += 0.2;
-							transformComponent.Rotation = 45.0f;
-						}
-						else if (moveDirComp.MoveDir == 6)
-						{
-							transformComponent.Position.z -= 0.2;
-							transformComponent.Position.x += 0.2;
-							transformComponent.Rotation = 135.0f;
-						}
-						else if (moveDirComp.MoveDir == 7)
-						{
-							transformComponent.Position.z -= 0.2;
-							transformComponent.Position.x -= 0.2;
-							transformComponent.Rotation = -135.0f;
-						}
-						else if (moveDirComp.MoveDir == 8)
-						{
-							transformComponent.Position.z += 0.2;
-							transformComponent.Position.x -= 0.2;
-							transformComponent.Rotation = -45.0f;
-						}
-					}	
-					else
-					{
-						if (moveDirComp.MoveDir == 1)
-						{
-							moveDirComp.MoveDir = 2;
-							transformComponent.Position.x -= 0.2;
-							transformComponent.Rotation = -90.0;
+							uint32_t oldDir = moveDirComp.MoveDir;
+							while (moveDirComp.MoveDir == oldDir)
+								moveDirComp.MoveDir = GetRandomValue(1, 8);
+
 							moveDirComp.CanChange = false;
-						}
-						else if (moveDirComp.MoveDir == 2)
-						{
-							moveDirComp.MoveDir = 1;
-							transformComponent.Position.x += 0.2;
-							transformComponent.Rotation = 90.0f;
-							moveDirComp.CanChange = false;
-						}
-						else if (moveDirComp.MoveDir == 3)
-						{
-							moveDirComp.MoveDir = 4;
-							transformComponent.Position.z -= 0.2;
-							transformComponent.Rotation = -180.0f;
-							moveDirComp.CanChange = false;
-						}
-						else if (moveDirComp.MoveDir == 4)
-						{
-							moveDirComp.MoveDir = 4;
-							transformComponent.Position.z += 0.2;
-							transformComponent.Rotation = 0.0f;
-							moveDirComp.CanChange = false;
-						}
-						else if (moveDirComp.MoveDir == 5)
-						{
-							moveDirComp.MoveDir = 7;
-							transformComponent.Position.z -= 0.2;
-							transformComponent.Position.x -= 0.2;
-							transformComponent.Rotation = -135.0f;
-							moveDirComp.CanChange = false;
-						}
-						else if (moveDirComp.MoveDir == 6)
-						{
-							moveDirComp.MoveDir = 8;
-							transformComponent.Position.z += 0.2;
-							transformComponent.Position.x -= 0.2;
-							transformComponent.Rotation = -45.0f;
-							moveDirComp.CanChange = false;
-						}
-						else if (moveDirComp.MoveDir == 7)
-						{
-							moveDirComp.MoveDir = 5;
-							transformComponent.Position.z += 0.2;
-							transformComponent.Position.x += 0.2;
-							transformComponent.Rotation = 45.0f;
-							moveDirComp.CanChange = false;
-						}
-						else if (moveDirComp.MoveDir == 8)
-						{
-							moveDirComp.MoveDir = 6;
-							transformComponent.Position.z -= 0.2;
-							transformComponent.Position.x += 0.2;
-							transformComponent.Rotation = 135.0f;
-							moveDirComp.CanChange = false;
+							
+							if (transformComponent.Position.x < 0)
+								transformComponent.Position.x += 0.2f;
+							else 
+								transformComponent.Position.x -= 0.2f;
+
+							if (transformComponent.Position.z < 0)
+								transformComponent.Position.z += 0.2f;
+							else
+								transformComponent.Position.z -= 0.2f;
 						}
 					}
-				}
-				else
-				{
-					m_Wait--;
+					else
+					{
+						m_Wait--;
+					}
 				}
 			}
 
@@ -362,8 +323,8 @@ namespace Editor {
 
 					while (currentTile.Type == Simulation::TileType::Water || m_World->GetLayers()[i + 1].Tiles[zPosition][xPosition].Type != Simulation::TileType::None)
 					{
-						xPosition = GetRandomValue(0, 9);
-						zPosition = GetRandomValue(0, 9);
+						xPosition = GetRandomValue(1, 8);
+						zPosition = GetRandomValue(1, 8);
 						currentTile = m_World->GetLayers()[i].Tiles[zPosition][xPosition];
 
 						if (currentTile.Type == Simulation::TileType::None)
@@ -373,13 +334,22 @@ namespace Editor {
 					if (currentTile.Type == Simulation::TileType::None)
 						continue;
 
-					uint8_t color = GetRandomValue(1, 3);
+					uint8_t color = GetRandomValue(0, 100);
+					if (color <= 55)
+						color = 1;
+					else if (color > 55 && color <= 80)
+						color = 2;
+					else
+						color = 3;
+
 					Core::Entity rabbit(m_Scene);
 					rabbit.AddComponent<Core::TagComponent>("Rabbit");
 					rabbit.AddComponent<Core::TransformComponent>(glm::vec3(xPosition - 5, 0.5f + i, zPosition - 5), 0.0f);
 					rabbit.AddComponent<Simulation::TileLocation>(xPosition, zPosition, i);
-					rabbit.AddComponent<Simulation::ColorComponent>((Simulation::AnimalsColors)color);
 					rabbit.AddComponent<Simulation::MoveDirectionComponent>(1);
+					rabbit.AddComponent<Simulation::HungerComponent>();
+
+					rabbit.AddComponent<Simulation::ColorComponent>((Simulation::AnimalsColors)color);
 				}
 			}
 			m_RabbitsToSpawn = 0;
@@ -421,6 +391,9 @@ namespace Editor {
 
 				Simulation::MoveDirectionComponent& dir = m_Scene->GetComponent<Simulation::MoveDirectionComponent>(m_Scene->GetSelectedEntity());
 				ImGui::Text(((std::string)"Move Dir: " + std::to_string(dir.MoveDir)).c_str());
+
+				Simulation::HungerComponent& hunger = m_Scene->GetComponent<Simulation::HungerComponent>(m_Scene->GetSelectedEntity());
+				ImGui::Text(((std::string)"Hunger: " + std::to_string(hunger.Hunger)).c_str());
 			}
 		}
 		else
@@ -452,7 +425,7 @@ namespace Editor {
 
 				if (ImGui::Button("Remove Layer"))
 				{
-					m_World->PopLayer(index);
+					m_World->PopLayer(index); 
 				}
 
 				index++;
@@ -477,5 +450,33 @@ namespace Editor {
 
 			ImGui::End();	
 		}
+	}
+
+	void EditorLayer::Processes()
+	{
+		for (auto& i : m_Scene->GetEntities<Simulation::HungerComponent>())
+		{
+			Core::TransformComponent& transformComponent = m_Scene->GetComponent<Core::TransformComponent>(i);
+			Simulation::HungerComponent& hunger = m_Scene->GetComponent<Simulation::HungerComponent>(i);
+
+			if (hunger.Hunger > 0)
+			{
+				hunger.Hunger--;
+			}
+			else
+			{
+				m_Scene->SetSelectedEntity(entt::null);
+				m_Scene->Destroy(i);
+			}
+		
+			if (hunger.Hunger < 1500)
+			{
+				if (transformComponent.Position.z + 5 >= 0 && transformComponent.Position.x + 5 >= 0 && transformComponent.Position.z + 5 <= 9 && transformComponent.Position.x + 5 <= 9 && (transformComponent.Position.z + 5 * 10) + transformComponent.Position.x + 5 > 10)
+				{
+					if (m_World->GetLayers()[transformComponent.Position.y].Tiles[transformComponent.Position.z + 5][transformComponent.Position.x + 5].Type == Simulation::TileType::Grass)
+						hunger.Hunger = 3000;
+				}
+			}
+		}	
 	}
 }

@@ -4,7 +4,7 @@
 namespace Simulation {
 	enum class AnimalsColors
 	{
-		None, Gray, Black, White
+		None = 0, Black, Gray, White
 	};
 
 	struct TileLocation
@@ -40,5 +40,12 @@ namespace Simulation {
 		{
 			MoveDir = dir;
 		}
+	};
+
+	struct HungerComponent
+	{
+		uint32_t Hunger = 3000;
+
+		HungerComponent() {}
 	};
 }
