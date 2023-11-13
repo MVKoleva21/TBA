@@ -213,13 +213,16 @@ namespace Editor {
 			if (ImGui::MenuItem("World Editor"))
 				m_IsWorldEditEnabled = !m_IsWorldEditEnabled;
 
-			if (ImGui::Button("Run", { 30, 15 }))
+			ImGui::SameLine((GetScreenWidth() / 2) - 22.5);
+			if (ImGui::Button("Run", { 45, 20 }))
 				m_IsRunning = !m_IsRunning;
 
 			ImGui::EndMainMenuBar();
 		}
 
-		ImGui::Begin("Viewport");
+		bool oppened = false;
+
+		ImGui::Begin("Viewport", &oppened, ImGuiWindowFlags_NoDecoration);
 
 		if (m_ViewPortSize.x != ImGui::GetContentRegionAvail().x || m_ViewPortSize.y != ImGui::GetContentRegionAvail().y)
 		{
@@ -234,6 +237,20 @@ namespace Editor {
 
 		if (m_IsRunning)
 		{
+			Simulation::WorldLayer bufLayer;
+
+			for (size_t i = 0; i < m_World->GetLayers()[m_World->GetLayers().size() - 1].Tiles.size(); i++)
+			{
+				for (size_t j = 0; j <  m_World->GetLayers()[ m_World->GetLayers().size() - 1].Tiles[i].size(); j++)
+				{
+					if ( m_World->GetLayers()[ m_World->GetLayers().size() - 1].Tiles[i][j].Type != Simulation::TileType::None)
+					{
+						m_World->GetLayers().push_back(bufLayer);
+						break;
+					}
+				}
+			}
+
 			for (int j = 0; j < m_RabbitsToSpawn; j++)
 			{
 				for (int i = m_World->GetLayers().size() - 1; i >= 0; i--)
@@ -326,7 +343,7 @@ namespace Editor {
 
 		ImGui::End();
 
-		ImGui::Begin("Scene Elements");
+		ImGui::Begin("Scene Elements", &oppened, ImGuiWindowFlags_NoDecoration);
 
 		m_SceneEntitiesSelectorWidth = ImGui::GetWindowSize().x;
 	
@@ -344,7 +361,7 @@ namespace Editor {
 
 		ImGui::End();
 
-		ImGui::Begin("Config");
+		ImGui::Begin("Config", &oppened, ImGuiWindowFlags_NoDecoration);
 
 		if (!m_IsWorldEditEnabled)
 		{
@@ -371,7 +388,6 @@ namespace Editor {
 				Simulation::ColorComponent& color = m_Scene->GetComponent<Simulation::ColorComponent>(m_Scene->GetSelectedEntity());
 				ImGui::Text(((std::string)"Color: " + color.ToString()).c_str());
 
-
 			}
 		}
 		else
@@ -391,7 +407,7 @@ namespace Editor {
 
 		if (m_IsWorldEditEnabled)
 		{
-			ImGui::Begin("Layers");
+			ImGui::Begin("Layers", &oppened, ImGuiWindowFlags_NoDecoration);
 
 			uint8_t index = 0;
 			for (auto& layer : m_World->GetLayers())
@@ -402,9 +418,7 @@ namespace Editor {
 					m_SelectedLayer = index;
 
 				if (ImGui::Button("Remove Layer"))
-				{
 					m_World->PopLayer(index); 
-				}
 
 				index++;
 				ImGui::PopID();
@@ -420,7 +434,7 @@ namespace Editor {
 		}
 		else
 		{ 
-			ImGui::Begin("Animals");
+			ImGui::Begin("Animals", &oppened, ImGuiWindowFlags_NoDecoration);
 
 			ImGui::Spacing();
 			ImGui::DragInt("Rabbits", &m_RabbitsToSpawn, 1.0, 0, 100);

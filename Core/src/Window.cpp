@@ -11,6 +11,7 @@ namespace Core {
 
 	void Window::Init()
 	{
+		SetConfigFlags(FLAG_MSAA_4X_HINT);
 		InitWindow(m_Width, m_Height, m_Title.c_str());
 	}
 }
