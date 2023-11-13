@@ -2,9 +2,14 @@
 #include <cstdint>
 
 namespace Simulation {
-	enum class AnimalsColors
+	enum class AnimalsColors : uint8_t
 	{
-		None, Gray, Black, White
+		None = 0, Black, Gray, White, Red
+	};
+
+	enum class Animals : uint8_t
+	{
+		None = 0, Rabbit, Fox
 	};
 
 	struct TileLocation
@@ -29,6 +34,23 @@ namespace Simulation {
 		{
 			RabbitColor = color;
 		}
+
+		std::string ToString()
+		{
+			switch (RabbitColor)
+			{
+			case AnimalsColors::Black:
+				return "Black";
+			case AnimalsColors::Gray:
+				return "Gray";
+			case AnimalsColors::White:
+				return "White";
+			case AnimalsColors::Red:
+				return "Red";
+			default:
+				break;
+			}
+		}
 	};
 
 	struct MoveDirectionComponent
@@ -39,6 +61,21 @@ namespace Simulation {
 		MoveDirectionComponent(uint32_t dir)
 		{
 			MoveDir = dir;
+		}
+	};
+
+	struct AnimalComponent
+	{
+		uint32_t Thirst = 0;
+		uint32_t Hunger = 0;
+		Animals Type = Animals::None;
+		uint32_t ReplroductiveUrges = 0;
+
+		AnimalComponent(uint32_t thirst, uint32_t hunger, Animals type)
+		{
+			Thirst = thirst;
+			Hunger = hunger;
+			Type = type;
 		}
 	};
 }
