@@ -33,6 +33,11 @@ namespace Simulation {
 		}
 	}
 
+	void World::PushLayer(WorldLayer layer) 
+	{ 
+		m_WorldLayers.push_back(layer); 	
+	}
+
 	void World::SaveWorld(std::string path)
 	{
 		YAML::Emitter out;

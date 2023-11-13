@@ -237,6 +237,20 @@ namespace Editor {
 
 		if (m_IsRunning)
 		{
+			Simulation::WorldLayer bufLayer;
+
+			for (size_t i = 0; i < m_World->GetLayers()[m_World->GetLayers().size() - 1].Tiles.size(); i++)
+			{
+				for (size_t j = 0; j <  m_World->GetLayers()[ m_World->GetLayers().size() - 1].Tiles[i].size(); j++)
+				{
+					if ( m_World->GetLayers()[ m_World->GetLayers().size() - 1].Tiles[i][j].Type != Simulation::TileType::None)
+					{
+						m_World->GetLayers().push_back(bufLayer);
+						break;
+					}
+				}
+			}
+
 			for (int j = 0; j < m_RabbitsToSpawn; j++)
 			{
 				for (int i = m_World->GetLayers().size() - 1; i >= 0; i--)
@@ -404,9 +418,7 @@ namespace Editor {
 					m_SelectedLayer = index;
 
 				if (ImGui::Button("Remove Layer"))
-				{
 					m_World->PopLayer(index); 
-				}
 
 				index++;
 				ImGui::PopID();
