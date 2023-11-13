@@ -2,12 +2,12 @@
 #include <cstdint>
 
 namespace Simulation {
-	enum class AnimalsColors
+	enum class AnimalsColors : uint8_t
 	{
-		None = 0, Black, Gray, White
+		None = 0, Black, Gray, White, Red
 	};
 
-	enum class Animals
+	enum class Animals : uint8_t
 	{
 		None = 0, Rabbit, Fox
 	};
@@ -45,6 +45,8 @@ namespace Simulation {
 				return "Gray";
 			case AnimalsColors::White:
 				return "White";
+			case AnimalsColors::Red:
+				return "Red";
 			default:
 				break;
 			}

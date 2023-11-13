@@ -39,6 +39,7 @@ namespace Editor {
 		uint32_t m_SelectedLayer = 0;
 
 		int32_t m_RabbitsToSpawn = 0;
+		int32_t m_FoxesToSpawn = 0;
 		bool m_IsRunning = false;
 
 		std::shared_ptr<Simulation::Models> m_Models = nullptr;
