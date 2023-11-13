@@ -396,7 +396,7 @@ void rlImGuiBeginInitImGui()
     SetupKeymap();
 
 	ImGuiIO& io = ImGui::GetIO();
-	io.Fonts->AddFontDefault();
+	io.Fonts->AddFontFromFileTTF("assets/fonts/Roboto-Regular.ttf", 16);
 }
 
 void rlImGuiSetup(bool dark)

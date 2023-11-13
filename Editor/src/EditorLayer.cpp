@@ -213,13 +213,16 @@ namespace Editor {
 			if (ImGui::MenuItem("World Editor"))
 				m_IsWorldEditEnabled = !m_IsWorldEditEnabled;
 
-			if (ImGui::Button("Run", { 30, 15 }))
+			ImGui::SameLine((GetScreenWidth() / 2) - 22.5);
+			if (ImGui::Button("Run", { 45, 20 }))
 				m_IsRunning = !m_IsRunning;
 
 			ImGui::EndMainMenuBar();
 		}
 
-		ImGui::Begin("Viewport");
+		bool oppened = false;
+
+		ImGui::Begin("Viewport", &oppened, ImGuiWindowFlags_NoDecoration);
 
 		if (m_ViewPortSize.x != ImGui::GetContentRegionAvail().x || m_ViewPortSize.y != ImGui::GetContentRegionAvail().y)
 		{
@@ -326,7 +329,7 @@ namespace Editor {
 
 		ImGui::End();
 
-		ImGui::Begin("Scene Elements");
+		ImGui::Begin("Scene Elements", &oppened, ImGuiWindowFlags_NoDecoration);
 
 		m_SceneEntitiesSelectorWidth = ImGui::GetWindowSize().x;
 	
@@ -344,7 +347,7 @@ namespace Editor {
 
 		ImGui::End();
 
-		ImGui::Begin("Config");
+		ImGui::Begin("Config", &oppened, ImGuiWindowFlags_NoDecoration);
 
 		if (!m_IsWorldEditEnabled)
 		{
@@ -371,7 +374,6 @@ namespace Editor {
 				Simulation::ColorComponent& color = m_Scene->GetComponent<Simulation::ColorComponent>(m_Scene->GetSelectedEntity());
 				ImGui::Text(((std::string)"Color: " + color.ToString()).c_str());
 
-
 			}
 		}
 		else
@@ -391,7 +393,7 @@ namespace Editor {
 
 		if (m_IsWorldEditEnabled)
 		{
-			ImGui::Begin("Layers");
+			ImGui::Begin("Layers", &oppened, ImGuiWindowFlags_NoDecoration);
 
 			uint8_t index = 0;
 			for (auto& layer : m_World->GetLayers())
@@ -420,7 +422,7 @@ namespace Editor {
 		}
 		else
 		{ 
-			ImGui::Begin("Animals");
+			ImGui::Begin("Animals", &oppened, ImGuiWindowFlags_NoDecoration);
 
 			ImGui::Spacing();
 			ImGui::DragInt("Rabbits", &m_RabbitsToSpawn, 1.0, 0, 100);
