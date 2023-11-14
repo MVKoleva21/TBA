@@ -10,7 +10,7 @@
   - [Collaborators](#collaborators)
 
 ## 🔍 Description <a name="description"></a>
-<p align="center"> This is an ecological game that is a simulator of an ecosystem. </p>
+<p> This is an ecological game that is a simulator of an ecosystem. </p>
 
 ## 📃 Documentation <a name="docs"></a>
 ### Code & Team Documentation
