@@ -1,6 +1,6 @@
 <h1 align="center"> TEAM TBA <h1>
 
-<div align="center" ><img src="/assets/banner.png" alt="logo with text TBA"> </div>
+<div align="center"> <img src="assets/baner.png" alt="logo with text TBA" /> </div>
 
 <div align="center"> 
 
@@ -80,6 +80,8 @@ Download the latest release from the releases page and run the exe file
 <a href="https://github.com/ocornut/imgui"> <img src="/assets/icons/ImGuiIcon.png" alt="ImGui" width="60"/></a>
 <a href="https://github.com/premake/premake-core"> <img src="/assets/icons/premakeIcon.png" alt="premake Icon" width="60"/></a>
 <a href="https:://python.org"> <img src="/assets/icons/pythonIcon.png" alt="premake Icon" width="60"/></a>
+<a href="https://github.com/skypjack/entt"> <img src="/assets/icons/enttIcon.png" alt="entt Icon" width="60"/></a>
+
 
 ### Tools used for documantation, presentation & communication:
 
@@ -91,10 +93,7 @@ Download the latest release from the releases page and run the exe file
 
 ### Art & Design & Sound Design
 <a href="https://www.figma.com/"><img src="/assets/icons/figmaIcon.png" alt="Figma Icon" width="60"/></a>
-<a href="https://www.aseprite.org/"><img src="/assets/icons/blenderIcon.jpeg" alt="Blender" width="60"/></a>
-
-### Web hosting
-<a href="https://www.netlify.com/"><img src="/assets/icons/netlify.png" alt="Netlify Icon" width="60"/></a>
+<a href="https://www.blender.org/"><img src="/assets/icons/blenderIcon.jpg" alt="Blender" width="60"/></a>
 
 ## 🧑 Collaborators <a name="collaborators"></a>
 - [Ivelin Bozhilov](https://github.com/MVKoleva21) - Scrum trainer 
