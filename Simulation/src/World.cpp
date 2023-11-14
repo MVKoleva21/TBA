@@ -12,7 +12,7 @@ namespace Simulation {
 
 	void World::LoadWorld(std::string path) 
 	{
-		m_WorldLayers.erase(m_WorldLayers.begin());
+		m_WorldLayers.clear();
 		YAML::Node worldFile = YAML::LoadFile(path);
 		auto layers = worldFile["Layers"];
 
