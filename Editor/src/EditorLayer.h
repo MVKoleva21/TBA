@@ -8,18 +8,39 @@
 #include <thread>
 
 namespace Editor {
+	/// @brief The editor layer
+	/// @details This layer is used to edit the world
+	/// @see Core::Layer
 	class EditorLayer : public Core::Layer
 	{
 	public:
+		/// @brief Run once when the layer is attached
 		void OnAttach();
+
+		/// @brief Run every frame
 		void OnUpdate();
+
+		/// @brief Run every frame when ImGui is rendered
 		void OnImGuiRender();
 
 	private:
+		/// @brief Run the simulating processes
 		void Processes();
+
+		/// @brief Update the entity position
+		/// @param entity entity to update
 		void UpdateEntityPosition(entt::entity entity);
+
+		/// @brief Update the entity position on hunger
+		/// @param entity entity to update
 		void UpdateEntityPositionOnHunger(entt::entity entity);
+
+		/// @brief Update the entity position on thirst
+		/// @param entity entity to update
 		void UpdateEntityPositionOnThirst(entt::entity entity);
+
+		/// @brief Update the entity position on reproduction
+		/// @param entity entity to update
 		void UpdateEntityPositionOnReproduction(entt::entity entity);
 
 	private:

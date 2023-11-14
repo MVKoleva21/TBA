@@ -3,503 +3,503 @@ Layers:
       - ArrPosX: 0
         ArrPosY: 0
         TileType: 3
-        PositionX: 65.5
-        PositionY: 41
+        PositionX: 65
+        PositionY: 49
       - ArrPosX: 0
         ArrPosY: 1
         TileType: 3
-        PositionX: 65.5
-        PositionY: 101
+        PositionX: 65
+        PositionY: 109
       - ArrPosX: 0
         ArrPosY: 2
         TileType: 3
-        PositionX: 65.5
-        PositionY: 161
+        PositionX: 65
+        PositionY: 169
       - ArrPosX: 0
         ArrPosY: 3
         TileType: 3
-        PositionX: 65.5
-        PositionY: 221
+        PositionX: 65
+        PositionY: 229
       - ArrPosX: 0
         ArrPosY: 4
         TileType: 3
-        PositionX: 65.5
-        PositionY: 281
+        PositionX: 65
+        PositionY: 289
       - ArrPosX: 0
         ArrPosY: 5
         TileType: 2
-        PositionX: 65.5
-        PositionY: 341
+        PositionX: 65
+        PositionY: 349
       - ArrPosX: 0
         ArrPosY: 6
         TileType: 2
-        PositionX: 65.5
-        PositionY: 401
+        PositionX: 65
+        PositionY: 409
       - ArrPosX: 0
         ArrPosY: 7
         TileType: 2
-        PositionX: 65.5
-        PositionY: 461
+        PositionX: 65
+        PositionY: 469
       - ArrPosX: 0
         ArrPosY: 8
         TileType: 2
-        PositionX: 65.5
-        PositionY: 521
+        PositionX: 65
+        PositionY: 529
       - ArrPosX: 0
         ArrPosY: 9
         TileType: 2
-        PositionX: 65.5
-        PositionY: 581
+        PositionX: 65
+        PositionY: 589
       - ArrPosX: 1
         ArrPosY: 0
         TileType: 3
-        PositionX: 125.5
-        PositionY: 41
+        PositionX: 125
+        PositionY: 49
       - ArrPosX: 1
         ArrPosY: 1
         TileType: 3
-        PositionX: 125.5
-        PositionY: 101
+        PositionX: 125
+        PositionY: 109
       - ArrPosX: 1
         ArrPosY: 2
         TileType: 3
-        PositionX: 125.5
-        PositionY: 161
+        PositionX: 125
+        PositionY: 169
       - ArrPosX: 1
         ArrPosY: 3
         TileType: 3
-        PositionX: 125.5
-        PositionY: 221
+        PositionX: 125
+        PositionY: 229
       - ArrPosX: 1
         ArrPosY: 4
         TileType: 3
-        PositionX: 125.5
-        PositionY: 281
+        PositionX: 125
+        PositionY: 289
       - ArrPosX: 1
         ArrPosY: 5
         TileType: 2
-        PositionX: 125.5
-        PositionY: 341
+        PositionX: 125
+        PositionY: 349
       - ArrPosX: 1
         ArrPosY: 6
         TileType: 2
-        PositionX: 125.5
-        PositionY: 401
+        PositionX: 125
+        PositionY: 409
       - ArrPosX: 1
         ArrPosY: 7
         TileType: 2
-        PositionX: 125.5
-        PositionY: 461
+        PositionX: 125
+        PositionY: 469
       - ArrPosX: 1
         ArrPosY: 8
         TileType: 2
-        PositionX: 125.5
-        PositionY: 521
+        PositionX: 125
+        PositionY: 529
       - ArrPosX: 1
         ArrPosY: 9
         TileType: 2
-        PositionX: 125.5
-        PositionY: 581
+        PositionX: 125
+        PositionY: 589
       - ArrPosX: 2
         ArrPosY: 0
         TileType: 3
-        PositionX: 185.5
-        PositionY: 41
+        PositionX: 185
+        PositionY: 49
       - ArrPosX: 2
         ArrPosY: 1
         TileType: 3
-        PositionX: 185.5
-        PositionY: 101
+        PositionX: 185
+        PositionY: 109
       - ArrPosX: 2
         ArrPosY: 2
         TileType: 3
-        PositionX: 185.5
-        PositionY: 161
+        PositionX: 185
+        PositionY: 169
       - ArrPosX: 2
         ArrPosY: 3
         TileType: 3
-        PositionX: 185.5
-        PositionY: 221
+        PositionX: 185
+        PositionY: 229
       - ArrPosX: 2
         ArrPosY: 4
         TileType: 3
-        PositionX: 185.5
-        PositionY: 281
+        PositionX: 185
+        PositionY: 289
       - ArrPosX: 2
         ArrPosY: 5
         TileType: 2
-        PositionX: 185.5
-        PositionY: 341
+        PositionX: 185
+        PositionY: 349
       - ArrPosX: 2
         ArrPosY: 6
         TileType: 2
-        PositionX: 185.5
-        PositionY: 401
+        PositionX: 185
+        PositionY: 409
       - ArrPosX: 2
         ArrPosY: 7
         TileType: 2
-        PositionX: 185.5
-        PositionY: 461
+        PositionX: 185
+        PositionY: 469
       - ArrPosX: 2
         ArrPosY: 8
         TileType: 2
-        PositionX: 185.5
-        PositionY: 521
+        PositionX: 185
+        PositionY: 529
       - ArrPosX: 2
         ArrPosY: 9
         TileType: 2
-        PositionX: 185.5
-        PositionY: 581
+        PositionX: 185
+        PositionY: 589
       - ArrPosX: 3
         ArrPosY: 0
         TileType: 3
-        PositionX: 245.5
-        PositionY: 41
+        PositionX: 245
+        PositionY: 49
       - ArrPosX: 3
         ArrPosY: 1
         TileType: 3
-        PositionX: 245.5
-        PositionY: 101
+        PositionX: 245
+        PositionY: 109
       - ArrPosX: 3
         ArrPosY: 2
         TileType: 3
-        PositionX: 245.5
-        PositionY: 161
+        PositionX: 245
+        PositionY: 169
       - ArrPosX: 3
         ArrPosY: 3
         TileType: 3
-        PositionX: 245.5
-        PositionY: 221
+        PositionX: 245
+        PositionY: 229
       - ArrPosX: 3
         ArrPosY: 4
         TileType: 3
-        PositionX: 245.5
-        PositionY: 281
+        PositionX: 245
+        PositionY: 289
       - ArrPosX: 3
         ArrPosY: 5
         TileType: 2
-        PositionX: 245.5
-        PositionY: 341
+        PositionX: 245
+        PositionY: 349
       - ArrPosX: 3
         ArrPosY: 6
         TileType: 2
-        PositionX: 245.5
-        PositionY: 401
+        PositionX: 245
+        PositionY: 409
       - ArrPosX: 3
         ArrPosY: 7
         TileType: 2
-        PositionX: 245.5
-        PositionY: 461
+        PositionX: 245
+        PositionY: 469
       - ArrPosX: 3
         ArrPosY: 8
         TileType: 2
-        PositionX: 245.5
-        PositionY: 521
+        PositionX: 245
+        PositionY: 529
       - ArrPosX: 3
         ArrPosY: 9
         TileType: 2
-        PositionX: 245.5
-        PositionY: 581
+        PositionX: 245
+        PositionY: 589
       - ArrPosX: 4
         ArrPosY: 0
         TileType: 3
-        PositionX: 305.5
-        PositionY: 41
+        PositionX: 305
+        PositionY: 49
       - ArrPosX: 4
         ArrPosY: 1
         TileType: 3
-        PositionX: 305.5
-        PositionY: 101
+        PositionX: 305
+        PositionY: 109
       - ArrPosX: 4
         ArrPosY: 2
         TileType: 3
-        PositionX: 305.5
-        PositionY: 161
+        PositionX: 305
+        PositionY: 169
       - ArrPosX: 4
         ArrPosY: 3
         TileType: 3
-        PositionX: 305.5
-        PositionY: 221
+        PositionX: 305
+        PositionY: 229
       - ArrPosX: 4
         ArrPosY: 4
         TileType: 3
-        PositionX: 305.5
-        PositionY: 281
+        PositionX: 305
+        PositionY: 289
       - ArrPosX: 4
         ArrPosY: 5
         TileType: 2
-        PositionX: 305.5
-        PositionY: 341
+        PositionX: 305
+        PositionY: 349
       - ArrPosX: 4
         ArrPosY: 6
         TileType: 2
-        PositionX: 305.5
-        PositionY: 401
+        PositionX: 305
+        PositionY: 409
       - ArrPosX: 4
         ArrPosY: 7
         TileType: 2
-        PositionX: 305.5
-        PositionY: 461
+        PositionX: 305
+        PositionY: 469
       - ArrPosX: 4
         ArrPosY: 8
         TileType: 2
-        PositionX: 305.5
-        PositionY: 521
+        PositionX: 305
+        PositionY: 529
       - ArrPosX: 4
         ArrPosY: 9
         TileType: 2
-        PositionX: 305.5
-        PositionY: 581
+        PositionX: 305
+        PositionY: 589
       - ArrPosX: 5
         ArrPosY: 0
         TileType: 3
-        PositionX: 365.5
-        PositionY: 41
+        PositionX: 365
+        PositionY: 49
       - ArrPosX: 5
         ArrPosY: 1
         TileType: 3
-        PositionX: 365.5
-        PositionY: 101
+        PositionX: 365
+        PositionY: 109
       - ArrPosX: 5
         ArrPosY: 2
         TileType: 3
-        PositionX: 365.5
-        PositionY: 161
+        PositionX: 365
+        PositionY: 169
       - ArrPosX: 5
         ArrPosY: 3
         TileType: 3
-        PositionX: 365.5
-        PositionY: 221
+        PositionX: 365
+        PositionY: 229
       - ArrPosX: 5
         ArrPosY: 4
         TileType: 3
-        PositionX: 365.5
-        PositionY: 281
+        PositionX: 365
+        PositionY: 289
       - ArrPosX: 5
         ArrPosY: 5
         TileType: 2
-        PositionX: 365.5
-        PositionY: 341
+        PositionX: 365
+        PositionY: 349
       - ArrPosX: 5
         ArrPosY: 6
         TileType: 2
-        PositionX: 365.5
-        PositionY: 401
+        PositionX: 365
+        PositionY: 409
       - ArrPosX: 5
         ArrPosY: 7
         TileType: 2
-        PositionX: 365.5
-        PositionY: 461
+        PositionX: 365
+        PositionY: 469
       - ArrPosX: 5
         ArrPosY: 8
         TileType: 2
-        PositionX: 365.5
-        PositionY: 521
+        PositionX: 365
+        PositionY: 529
       - ArrPosX: 5
         ArrPosY: 9
         TileType: 2
-        PositionX: 365.5
-        PositionY: 581
+        PositionX: 365
+        PositionY: 589
       - ArrPosX: 6
         ArrPosY: 0
         TileType: 3
-        PositionX: 425.5
-        PositionY: 41
+        PositionX: 425
+        PositionY: 49
       - ArrPosX: 6
         ArrPosY: 1
         TileType: 3
-        PositionX: 425.5
-        PositionY: 101
+        PositionX: 425
+        PositionY: 109
       - ArrPosX: 6
         ArrPosY: 2
         TileType: 3
-        PositionX: 425.5
-        PositionY: 161
+        PositionX: 425
+        PositionY: 169
       - ArrPosX: 6
         ArrPosY: 3
         TileType: 3
-        PositionX: 425.5
-        PositionY: 221
+        PositionX: 425
+        PositionY: 229
       - ArrPosX: 6
         ArrPosY: 4
         TileType: 3
-        PositionX: 425.5
-        PositionY: 281
+        PositionX: 425
+        PositionY: 289
       - ArrPosX: 6
         ArrPosY: 5
         TileType: 2
-        PositionX: 425.5
-        PositionY: 341
+        PositionX: 425
+        PositionY: 349
       - ArrPosX: 6
         ArrPosY: 6
         TileType: 2
-        PositionX: 425.5
-        PositionY: 401
+        PositionX: 425
+        PositionY: 409
       - ArrPosX: 6
         ArrPosY: 7
         TileType: 2
-        PositionX: 425.5
-        PositionY: 461
+        PositionX: 425
+        PositionY: 469
       - ArrPosX: 6
         ArrPosY: 8
         TileType: 2
-        PositionX: 425.5
-        PositionY: 521
+        PositionX: 425
+        PositionY: 529
       - ArrPosX: 6
         ArrPosY: 9
         TileType: 2
-        PositionX: 425.5
-        PositionY: 581
+        PositionX: 425
+        PositionY: 589
       - ArrPosX: 7
         ArrPosY: 0
         TileType: 3
-        PositionX: 485.5
-        PositionY: 41
+        PositionX: 485
+        PositionY: 49
       - ArrPosX: 7
         ArrPosY: 1
         TileType: 3
-        PositionX: 485.5
-        PositionY: 101
+        PositionX: 485
+        PositionY: 109
       - ArrPosX: 7
         ArrPosY: 2
         TileType: 3
-        PositionX: 485.5
-        PositionY: 161
+        PositionX: 485
+        PositionY: 169
       - ArrPosX: 7
         ArrPosY: 3
         TileType: 3
-        PositionX: 485.5
-        PositionY: 221
+        PositionX: 485
+        PositionY: 229
       - ArrPosX: 7
         ArrPosY: 4
         TileType: 3
-        PositionX: 485.5
-        PositionY: 281
+        PositionX: 485
+        PositionY: 289
       - ArrPosX: 7
         ArrPosY: 5
         TileType: 2
-        PositionX: 485.5
-        PositionY: 341
+        PositionX: 485
+        PositionY: 349
       - ArrPosX: 7
         ArrPosY: 6
         TileType: 2
-        PositionX: 485.5
-        PositionY: 401
+        PositionX: 485
+        PositionY: 409
       - ArrPosX: 7
         ArrPosY: 7
         TileType: 2
-        PositionX: 485.5
-        PositionY: 461
+        PositionX: 485
+        PositionY: 469
       - ArrPosX: 7
         ArrPosY: 8
         TileType: 2
-        PositionX: 485.5
-        PositionY: 521
+        PositionX: 485
+        PositionY: 529
       - ArrPosX: 7
         ArrPosY: 9
         TileType: 2
-        PositionX: 485.5
-        PositionY: 581
+        PositionX: 485
+        PositionY: 589
       - ArrPosX: 8
         ArrPosY: 0
         TileType: 3
-        PositionX: 545.5
-        PositionY: 41
+        PositionX: 545
+        PositionY: 49
       - ArrPosX: 8
         ArrPosY: 1
         TileType: 3
-        PositionX: 545.5
-        PositionY: 101
+        PositionX: 545
+        PositionY: 109
       - ArrPosX: 8
         ArrPosY: 2
         TileType: 3
-        PositionX: 545.5
-        PositionY: 161
+        PositionX: 545
+        PositionY: 169
       - ArrPosX: 8
         ArrPosY: 3
         TileType: 3
-        PositionX: 545.5
-        PositionY: 221
+        PositionX: 545
+        PositionY: 229
       - ArrPosX: 8
         ArrPosY: 4
         TileType: 3
-        PositionX: 545.5
-        PositionY: 281
+        PositionX: 545
+        PositionY: 289
       - ArrPosX: 8
         ArrPosY: 5
         TileType: 2
-        PositionX: 545.5
-        PositionY: 341
+        PositionX: 545
+        PositionY: 349
       - ArrPosX: 8
         ArrPosY: 6
         TileType: 2
-        PositionX: 545.5
-        PositionY: 401
+        PositionX: 545
+        PositionY: 409
       - ArrPosX: 8
         ArrPosY: 7
         TileType: 2
-        PositionX: 545.5
-        PositionY: 461
+        PositionX: 545
+        PositionY: 469
       - ArrPosX: 8
         ArrPosY: 8
         TileType: 2
-        PositionX: 545.5
-        PositionY: 521
+        PositionX: 545
+        PositionY: 529
       - ArrPosX: 8
         ArrPosY: 9
         TileType: 2
-        PositionX: 545.5
-        PositionY: 581
+        PositionX: 545
+        PositionY: 589
       - ArrPosX: 9
         ArrPosY: 0
         TileType: 3
-        PositionX: 605.5
-        PositionY: 41
+        PositionX: 605
+        PositionY: 49
       - ArrPosX: 9
         ArrPosY: 1
         TileType: 3
-        PositionX: 605.5
-        PositionY: 101
+        PositionX: 605
+        PositionY: 109
       - ArrPosX: 9
         ArrPosY: 2
         TileType: 3
-        PositionX: 605.5
-        PositionY: 161
+        PositionX: 605
+        PositionY: 169
       - ArrPosX: 9
         ArrPosY: 3
         TileType: 3
-        PositionX: 605.5
-        PositionY: 221
+        PositionX: 605
+        PositionY: 229
       - ArrPosX: 9
         ArrPosY: 4
         TileType: 3
-        PositionX: 605.5
-        PositionY: 281
+        PositionX: 605
+        PositionY: 289
       - ArrPosX: 9
         ArrPosY: 5
         TileType: 2
-        PositionX: 605.5
-        PositionY: 341
+        PositionX: 605
+        PositionY: 349
       - ArrPosX: 9
         ArrPosY: 6
         TileType: 2
-        PositionX: 605.5
-        PositionY: 401
+        PositionX: 605
+        PositionY: 409
       - ArrPosX: 9
         ArrPosY: 7
         TileType: 2
-        PositionX: 605.5
-        PositionY: 461
+        PositionX: 605
+        PositionY: 469
       - ArrPosX: 9
         ArrPosY: 8
         TileType: 2
-        PositionX: 605.5
-        PositionY: 521
+        PositionX: 605
+        PositionY: 529
       - ArrPosX: 9
         ArrPosY: 9
         TileType: 2
-        PositionX: 605.5
-        PositionY: 581
+        PositionX: 605
+        PositionY: 589
   - Layer:
       - ArrPosX: 0
         ArrPosY: 0
