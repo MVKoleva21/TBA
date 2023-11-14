@@ -5,7 +5,7 @@
 <div align="center"> 
 
 ![GitHub milestones](https://github.com/MVKoleva21/TBA/milestones) 
-![GitHub closed issues](https://github.com/MVKoleva21/TBA/issues?q=is%3Aissue+is%3Aclosed)
+![GitHub closed issues](https://github.com/MVKoleva21/TBA/issues)
 
 </div>
 
@@ -50,7 +50,7 @@ Download the latest release from the releases page and run the exe file
 - Installation
 1. Clone the repo:
 ```
-  git clone https://github.com/MVKoleva21/TBA.git
+  git clone https://github.com/MVKoleva21/TBA.git --recursive
 ```
     
 2. Open terminal in the project folder and run:
@@ -91,7 +91,7 @@ Download the latest release from the releases page and run the exe file
 
 ### Art & Design & Sound Design
 <a href="https://www.figma.com/"><img src="/assets/icons/figmaIcon.png" alt="Figma Icon" width="60"/></a>
-<a href="https://www.aseprite.org/"><img src="/assets/icons/blenderIcon.png" alt="Blender" width="60"/></a>
+<a href="https://www.aseprite.org/"><img src="/assets/icons/blenderIcon.jpeg" alt="Blender" width="60"/></a>
 
 ### Web hosting
 <a href="https://www.netlify.com/"><img src="/assets/icons/netlify.png" alt="Netlify Icon" width="60"/></a>
