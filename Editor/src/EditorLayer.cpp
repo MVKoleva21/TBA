@@ -79,11 +79,11 @@ namespace Editor {
 
 				if (animal.Type == Simulation::Animals::Rabbit)
 				{
-					if(colorComponent.RabbitColor == Simulation::AnimalsColors::Gray)
+					if (colorComponent.RabbitColor == Simulation::AnimalsColors::Gray)
 						DrawModelEx(*m_Models->GetGrayRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
-					else if(colorComponent.RabbitColor == Simulation::AnimalsColors::Black)
+					else if (colorComponent.RabbitColor == Simulation::AnimalsColors::Black)
 						DrawModelEx(*m_Models->GetBlackRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
-					else if(colorComponent.RabbitColor == Simulation::AnimalsColors::White)
+					else if (colorComponent.RabbitColor == Simulation::AnimalsColors::White)
 						DrawModelEx(*m_Models->GetWhiteRabbitModel(), { transformComponent.Position.x, transformComponent.Position.y, transformComponent.Position.z }, { 0.0, 1.0, 0.0 }, transformComponent.Rotation, { 0.5f, 0.5f, 0.5f }, WHITE);
 				}
 				else if (animal.Type == Simulation::Animals::Fox)
@@ -536,6 +536,16 @@ namespace Editor {
 					transformComponent.Position.z += 0.2;
 					transformComponent.Position.x -= 0.2;
 					transformComponent.Rotation = -45.0f;
+				}
+
+				if (transformComponent.Position.y < m_World->GetLayers().size() - 2 && m_World->GetLayers()[transformComponent.Position.y + 1].Tiles[transformComponent.Position.z + 5][transformComponent.Position.x +5 ].Type != Simulation::TileType::None)
+				{
+					transformComponent.Position.y += 1.0f;
+				}
+
+				if (transformComponent.Position.y > 0 && m_World->GetLayers()[transformComponent.Position.y - 1].Tiles[transformComponent.Position.z + 5][transformComponent.Position.x +5 ].Type == Simulation::TileType::None)
+				{
+					transformComponent.Position.y -= 2.0f;
 				}
 			}	
 			else
