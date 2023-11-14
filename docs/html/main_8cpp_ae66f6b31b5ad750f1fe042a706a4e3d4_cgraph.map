@@ -1,0 +1,9 @@
+<map id="main" name="main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,55,57"/>
+<area shape="rect" id="Node000002" href="$class_core_1_1_application.html#a96ebd656c0b626b488819790f4b0ae5f" title="Initialize the application." alt="" coords="106,5,251,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="54,37,90,31,91,36,55,43"/>
+<area shape="rect" id="Node000004" href="$class_core_1_1_application.html#a073563ab83ba295eb366975f55a9d20f" title="Run the application." alt="" coords="103,56,254,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="55,45,88,51,87,56,54,51"/>
+<area shape="rect" id="Node000003" href="$class_core_1_1_window.html#a398e3391810626c2fb9ed88aac1b540d" title="Update the window." alt="" coords="302,5,496,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="251,16,286,16,286,21,251,21"/>
+</map>
