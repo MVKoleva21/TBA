@@ -96,7 +96,7 @@ Download the latest release from the releases page and run the exe file
 <a href="https://www.blender.org/"><img src="/assets/icons/blenderIcon.jpg" alt="Blender" width="60"/></a>
 
 ## 🧑 Collaborators <a name="collaborators"></a>
-- [Ivelin Bozhilov](https://github.com/MVKoleva21) - Scrum trainer 
+- [Maria Koleva](https://github.com/MVKoleva21) - Scrum trainer 
 - [Ivan Stoychev](https://github.com/IYStoychev21) - Back-end Developer
-- [Stoyan Ivanov](https://github.com/SGMikov21) - Back-end Developer
-- [Stoyan Skuliev](https://github.com/IIBozhilov21) - Designer
+- [Stelian Mikov](https://github.com/SGMikov21) - Back-end Developer
+- [Ivelin Bozhilov](https://github.com/IIBozhilov21) - Designer
