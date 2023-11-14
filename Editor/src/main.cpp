@@ -4,6 +4,10 @@
 #include <imgui.h>
 
 namespace Editor {
+	/// @brief The editor application
+	///
+	/// @details This is the main application for the editor
+	/// @see Core::Application
 	class EditorApplication : public Core::Application
 	{
 	public:

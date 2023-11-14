@@ -1,0 +1,5 @@
+<map id="Core::FilesystemWindow::OpenFile" name="Core::FilesystemWindow::OpenFile">
+<area shape="rect" id="Node000001" title="Open a file." alt="" coords="183,5,349,48"/>
+<area shape="rect" id="Node000002" href="$class_editor_1_1_editor_layer.html#a4041bae2fdc3cd6e29848b434062c1bd" title="Run every frame when ImGui is rendered." alt="" coords="5,5,135,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,29,135,29,135,24,167,24"/>
+</map>

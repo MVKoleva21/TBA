@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 namespace Core {
+	/// @brief Tag component for entities
 	struct TagComponent
 	{
 		std::string Tag;
@@ -13,6 +14,7 @@ namespace Core {
 		}
 	};
 
+	/// @brief Transform component for entities (position and rotation)
 	struct TransformComponent
 	{
 		glm::vec3 Position = { 0.0f, 0.0f, 0.0f };

@@ -1,0 +1,5 @@
+<map id="Editor::EditorLayer" name="Editor::EditorLayer">
+<area shape="rect" id="Node000001" title="The editor layer." alt="" coords="5,80,135,107"/>
+<area shape="rect" id="Node000002" href="$class_core_1_1_layer.html" title="A layer in the application." alt="" coords="26,5,114,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,48,73,80,67,80,67,48"/>
+</map>

@@ -8,3 +8,6 @@
 [submodule "vendor/yml-cpp"]
 	path = vendor/yml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "doxygen-awesome-css"]
+	path = doxygen-awesome-css
+	url = https://github.com/jothepro/doxygen-awesome-css.git

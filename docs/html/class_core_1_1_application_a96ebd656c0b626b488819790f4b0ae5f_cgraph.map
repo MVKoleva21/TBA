@@ -1,0 +1,5 @@
+<map id="Core::Application::Init" name="Core::Application::Init">
+<area shape="rect" id="Node000001" title="Initialize the application." alt="" coords="5,5,151,32"/>
+<area shape="rect" id="Node000002" href="$class_core_1_1_window.html#a398e3391810626c2fb9ed88aac1b540d" title="Update the window." alt="" coords="199,5,393,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,16,183,16,183,21,151,21"/>
+</map>
