@@ -2,13 +2,6 @@
 
 <div align="center"> <img src="assets/baner.png" alt="logo with text TBA" /> </div>
 
-<div align="center"> 
-
-![GitHub milestones](https://github.com/MVKoleva21/TBA/milestones) 
-![GitHub closed issues](https://github.com/MVKoleva21/TBA/issues)
-
-</div>
-
 ## 📋 Table of contents
   - [Description](#description)
   - [Documentation](#docs)
